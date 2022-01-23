@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'birth'             => $this->faker->date(),
             'civil_status'      => $this->faker->randomElement(['single', 'married']),
             'address'           => $this->faker->address(),
-            'position'          => $this->faker->name(),
+            'position'          => $this->faker->jobTitle(),
             'status'            => $this->faker->randomElement(['active', 'archived']),
             'email'             => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),

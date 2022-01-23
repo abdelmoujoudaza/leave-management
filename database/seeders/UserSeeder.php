@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\LeaveType;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
-class LeaveTypeSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +15,9 @@ class LeaveTypeSeeder extends Seeder
      */
     public function run()
     {
-        LeaveType::factory()
-            ->count(5)
+        User::factory()
+            ->count(10)
+            ->hasLeaves(3)
             ->create();
     }
 }
