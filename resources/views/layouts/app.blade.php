@@ -19,26 +19,29 @@
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
-        <x-jet-banner />
-
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
-
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+        <div class="flex flex-row min-h-screen bg-white text-gray-800" x-data="{ open: true }">
+            @include('sidebar')
+            <main class="main flex flex-col flex-grow transition-all duration-150 ease-in">
+                @livewire('navigation-menu')
+                <div class="main-content flex flex-col flex-grow p-4">
+                    <!-- Page Heading -->
+                    @if (isset($header))
+                        <header class="font-bold text-2xl text-gray-700">
+                            {{ $header }}
+                        </header>
+                    @endif
+                    <div class="flex flex-col flex-grow bg-white mt-4">
+                        <!-- Page Content -->
+                        {{ $slot }}
                     </div>
-                </header>
-            @endif
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
+                </div>
+                <footer class="footer px-4 py-6">
+                    <div class="footer-content">
+                        <p class="text-sm text-gray-600 text-center">© Leave Management 2022. All rights reserved.</p>
+                    </div>
+                </footer>
             </main>
         </div>
-
         @stack('modals')
 
         @livewireScripts
