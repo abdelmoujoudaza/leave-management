@@ -1,65 +1,71 @@
 <div class="w-full px-6 py-6 font-semibold">
-    <div class="flex flex-col bg-gray-light mb-4 py-2">
-        <div class="flex justify-center font-semibold text-white">{{ __('Filter by') }}</div>
-        <hr class="h-px bg-white my-2" />
+    <div class="flex flex-col bg-gray-800 mb-4 py-2">
+        <div class="flex justify-center font-semibold text-gray-100">{{ __('Filter by') }}</div>
+        <hr class="h-px bg-gray-100 my-2" />
         <div class="flex justify-around w-full items-center">
             <div class="flex items-center relative w-56" x-data>
-                <x-jet-label for="advisor" class="inline-flex items-center bg-gray-dark w-2/5 pl-2 py-2 border-none font-semibold text-white outline-none text-sm rounded-none h-full">{{ __('Employé') }}</x-jet-label>
-                {{-- <x-jet-input id="advisor" class="form-input block shadow-none w-3/5 focus:shadow-none rounded-none text-sm py-2" type="text" name="user" placeholder="" /> --}}
-                {{-- <select id="user" wire:model="user" class="form-select shadow-none focus:shadow-none rounded-none text-sm border-l-0 w-3/5 py-2" name="user"> --}}
-                <select id="user" x-ref="select" x-on:load="$refs.select.value=''" wire:input="doSelectFilter('user', $event.target.value)" class="form-select shadow-none focus:shadow-none rounded-none text-sm border-l-0 w-3/5 py-2" name="user">
-                    <option value="">{{ __('Employé') }}</option>
-                    @foreach ($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->firstname }} {{ $user->lastname }}</option>
-                    @endforeach
-            </select>
+                <x-jet-label for="user" class="inline-flex items-center bg-gray-100 w-2/5 pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Employee') }}</x-jet-label>
+                    <select id="user" x-ref="select" x-on:load="$refs.select.value=''" wire:input="doSelectFilter('user', $event.target.value)" class="form-select shadow-none focus:shadow-none rounded-none text-sm border-none w-3/5 py-2" name="user">
+                        <option disabled value="">{{ __('Employee') }}</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->firstname }} {{ $user->lastname }}</option>
+                        @endforeach
+                </select>
             </div>
             <div class="flex items-center relative w-56" x-data>
-                <x-jet-label for="period" class="inline-flex items-center bg-gray-dark w-2/5 pl-2 py-2 border-none font-semibold text-white outline-none text-sm rounded-none h-full">{{ __('Period') }}</x-jet-label>
-                {{-- <x-jet-input id="period" wire:model="period" class="form-input block shadow-none w-3/5 focus:shadow-none rounded-none text-sm py-2" type="date" name="period" placeholder="" /> --}}
+                <x-jet-label for="period" class="inline-flex items-center bg-gray-100 w-2/5 pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Period') }}</x-jet-label>
                 <x-jet-input id="period" x-ref="date" class="form-input block shadow-none w-3/5 focus:shadow-none rounded-none placeholder-black text-sm py-2" type="text" name="period" placeholder="Période" />
             </div>
             <div class="flex items-center relative w-56" x-data>
-                <x-jet-label for="leave-type" class="inline-flex items-center bg-gray-dark w-2/5 pl-2 py-2 border-none font-semibold text-white outline-none text-sm rounded-none h-full">{{ __('Leave type') }}</x-jet-label>
-                <select id="leave-type" x-ref="select" x-on:load="$refs.select.value=''" wire:input="doSelectFilter('leaveType', $event.target.value)" class="form-select shadow-none focus:shadow-none rounded-none text-sm border-l-0 w-3/5 py-2" name="leave_type">
-                        <option value="">{{ __('Leave type') }}</option>
+                <x-jet-label for="leave-type" class="inline-flex items-center bg-gray-100 w-2/5 pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Leave type') }}</x-jet-label>
+                <select id="leave-type" x-ref="select" x-on:load="$refs.select.value=''" wire:input="doSelectFilter('leaveType', $event.target.value)" class="form-select shadow-none focus:shadow-none rounded-none text-sm border-none w-3/5 py-2" name="leave_type">
+                        <option disabled value="">{{ __('Leave type') }}</option>
                         @foreach ($leaveTypes as $leaveType)
                             <option value="{{ $leaveType->id }}">{{ $leaveType->name }}</option>
+                        @endforeach
+                </select>
+            </div>
+            <div class="flex items-center relative w-56" x-data>
+                <x-jet-label for="demand-type" class="inline-flex items-center bg-gray-100 w-2/5 pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Demand type') }}</x-jet-label>
+                <select id="demand-type" x-ref="select" x-on:load="$refs.select.value=''" wire:input="doSelectFilter('demandType', $event.target.value)" class="form-select shadow-none focus:shadow-none rounded-none text-sm border-none w-3/5 py-2" name="demand_type">
+                        <option disabled value="">{{ __('Demand type') }}</option>
+                        @foreach ($demandTypes as $demandType)
+                            <option value="{{ $demandType['id'] }}">{{ $demandType['name'] }}</option>
                         @endforeach
                 </select>
             </div>
         </div>
     </div>
     <div class="flex justify-start items-center mb-4" x-data @file-exported.window="$refs.xlsx.disabled = false; $refs.csv.disabled = false;">
-        <button type="button" x-ref="xlsx" @click="$refs.xlsx.disabled = true; $refs.csv.disabled = true;" wire:click="export('xlsx')" class="bg-blue-light outline-none text-white text-base py-3 px-5 mr-5 disabled:opacity-50">
+        <button type="button" x-ref="xlsx" @click="$refs.xlsx.disabled = true; $refs.csv.disabled = true;" wire:click="export('xlsx')" class="bg-gray-800 border-gray-800 outline-none text-gray-300 text-base py-3 px-5 mr-5 disabled:opacity-50">
             {{ __('Excel export') }}
         </button>
-        <button type="button" x-ref="csv" @click="$refs.xlsx.disabled = true; $refs.csv.disabled = true;" wire:click="export('csv')" class="bg-blue-light outline-none text-white text-base py-3 px-5 disabled:opacity-50">
+        <button type="button" x-ref="csv" @click="$refs.xlsx.disabled = true; $refs.csv.disabled = true;" wire:click="export('csv')" class="bg-gray-800 border-gray-800 outline-none text-gray-300 text-base py-3 px-5 disabled:opacity-50">
             {{ __('CSV export') }}
         </button>
     </div>
     <div class="w-full max-w-full relative overflow-x-scroll mb-4">
         <table class="table-auto border-collapse text-sm text-left">
-            <thead class="text-white bg-blue-light">
-                <th class="border border-blue-light border-r-white px-4 py-3">{{ __('Employé') }}</th>
-                <th class="border border-blue-light border-r-white px-4 py-3">{{ __('Nombre de jours') }}</th>
-                <th class="border border-blue-light border-r-white px-4 py-3">{{ __('Date de début') }}</th>
-                <th class="border border-blue-light border-r-white px-4 py-3">{{ __('Date de fin') }}</th>
-                <th class="border border-blue-light border-r-white px-4 py-3">{{ __('statut') }}</th>
-                <th class="border border-blue-light border-r-white px-4 py-3">{{ __('Type de demande') }}</th>
-                <th class="border border-blue-light border-r-white px-4 py-3">{{ __('Description') }}</th>
-                <th class="border border-blue-light px-4 py-3">{{ __('Type de congé') }}</th>
+            <thead class="text-gray-300 bg-gray-800">
+                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Employee') }}</th>
+                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Number of days') }}</th>
+                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Start Date') }}</th>
+                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('End date') }}</th>
+                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Status') }}</th>
+                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Demand type') }}</th>
+                {{-- <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Description') }}</th> --}}
+                <th class="border border-gray-800 px-4 py-3">{{ __('Leave type') }}</th>
             </thead>
             <tbody class="text-gray-normal">
                 @forelse ($this->leaves as $leave)
                     <tr>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->fullname }}</td>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->number }}</td>
-                        <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ date('d/m/Y', strtotime($leave->start_date)) }}</td>
-                        <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ date('d/m/Y', strtotime($leave->end_date)) }}</td>
+                        <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->start_date ? date('d/m/Y', strtotime($leave->start_date)) : '' }}</td>
+                        <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->start_date ? date('d/m/Y', strtotime($leave->end_date)) : '' }}</td>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->status }}</td>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->type }}</td>
-                        <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->description }}</td>
+                        {{-- <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->description }}</td> --}}
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->leave_type_name }}</td>
                     </tr>
                 @empty

@@ -6,8 +6,12 @@ use App\Models\User;
 use App\Models\Leave;
 use Livewire\Component;
 use App\Models\LeaveType;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Excel;
+use App\Exports\LeavesExport;
+use Illuminate\Support\Facades\DB;
 
 class ListLeaves extends Component
 {
@@ -15,8 +19,10 @@ class ListLeaves extends Component
 
     public $users;
     public $leaveTypes;
+    public $demandTypes;
     public $user       = null;
     public $leaveType  = null;
+    public $demandType = null;
     public $period     = null;
     protected $perPage = 10;
     protected $model   = User::class;
@@ -50,8 +56,18 @@ class ListLeaves extends Component
 
     public function mount()
     {
-        $this->users      = User::all();
-        $this->leaveTypes = LeaveType::all();
+        $this->users       = User::all();
+        $this->leaveTypes  = LeaveType::all();
+        $this->demandTypes = [
+            (object) [
+                'id'   => 'leave',
+                'name' => 'leave'
+            ],
+            (object) [
+                'id'   => 'allocation',
+                'name' => 'allocation'
+            ]
+        ];
     }
 
     public function render()
@@ -67,7 +83,7 @@ class ListLeaves extends Component
             $export = $this->formattedMethodName('xlsx', 'exportAs');
         }
 
-        $file = $this->$export(new ParticipantsExport($this->getQuery(), $this->headers, $this->dates));
+        $file = $this->$export(new LeavesExport($this->getQuery(), $this->headers, $this->dates));
         $this->dispatchBrowserEvent('file-exported');
         return $file;
     }
@@ -103,7 +119,10 @@ class ListLeaves extends Component
     {
         $this->query = $this->builder();
 
-        $this->filter('leaveType')
+        $this->filter('user')
+            ->filter('period')
+            ->filter('leaveType')
+            ->filter('demandType')
             ->sort();
     }
 
@@ -154,9 +173,10 @@ class ListLeaves extends Component
 
     public function doDateFilter($name, $value)
     {
-        // if ( ! is_null($value) && ! empty($value)) {
-        //     $dates = array_filter(explode(',', $value), array(Helper::class, 'validateDate'));
-        // }
+        if ( ! is_null($value) && ! empty($value)) {
+            // $dates = array_filter(explode(',', $value), array(Helper::class, 'validateDate'));
+            $dates = explode(',', $value);
+        }
 
         $this->$name = ! empty($dates) ? $dates : null;
         $this->resetPage();
@@ -189,6 +209,11 @@ class ListLeaves extends Component
     protected function filterByLeaveType()
     {
         $this->query->where('leaves.leave_type_id', $this->leaveType);
+    }
+
+    protected function filterByDemandType()
+    {
+        $this->query->where('leaves.type', $this->demandType);
     }
 
     protected function formattedMethodName($name, $prefix = 'filterBy')
