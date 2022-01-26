@@ -28,9 +28,9 @@ class ListLeave extends Component
     protected $perPage = 10;
     protected $model   = User::class;
     protected $query;
-    protected $rules = [
-        'leave'             => 'required|exists:leaves,id',
-        'leave.status'      => 'required|in:pending',
+    protected $rules   = [
+        'leave'        => 'required|exists:leaves,id',
+        'leave.status' => 'required|in:pending',
     ];
 
     protected $headers = [
@@ -163,19 +163,18 @@ class ListLeave extends Component
 
     public function updateLeave($leave, $status)
     {
-        $this->validate();
-
         $this->leave = Leave::find($leave);
 
-        if ( ! is_null($this->leave)) {
-            // $this->dispatchBrowserEvent('leave-removed');
+        if ( ! is_null($this->leave) && in_array($status, ['approved', 'refused'])) {
             try {
                 DB::beginTransaction();
-                $this->status = $status;
-                $this->approvedBy()->associate(auth()->user());
+                $this->leave->status = $status;
+                $this->leave->approvedBy()->associate(auth()->user());
+                $this->leave->save();
                 // session()->flash("message", "Post successfully updated.");
                 DB::commit();
             } catch (\Exception $exception) {
+                dd($exception);
                 DB::rollback();
             }
         }

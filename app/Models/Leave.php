@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Leave extends Model
@@ -39,32 +40,43 @@ class Leave extends Model
     ];
 
     /**
-     * Get the user associated with the Leave
+     * Get the user that owns the Leave
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user(): HasOne
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * Get the type associated with the Leave
+     * Get the type that owns the Leave
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function type(): HasOne
+    public function type(): BelongsTo
     {
-        return $this->hasOne(LeaveType::class);
+        return $this->belongsTo(LeaveType::class);
     }
 
     /**
-     * Get the user associated with the Leave
+     * Get the user that approved the Leave
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function approvedBy(): HasOne
+    public function approvedBy(): BelongsTo
     {
-        return $this->hasOne(User::class, 'id', 'approved_by');
+        return $this->belongsTo(User::class, 'approved_by', 'id');
+    }
+
+    /**
+     * Scope a query to only include popular users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePending($query)
+    {
+        return $query->whereStatus('pending');
     }
 }

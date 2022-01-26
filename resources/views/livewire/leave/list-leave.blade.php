@@ -64,21 +64,25 @@
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->number }}</td>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->start_date ? date('d/m/Y', strtotime($leave->start_date)) : '' }}</td>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->start_date ? date('d/m/Y', strtotime($leave->end_date)) : '' }}</td>
-                        <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->status }}</td>
+                        <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">
+                            {{ __(ucfirst($leave->status)) }}
+                            {{-- <span type="button" class="w-max inline-flex justify-center font-bold shadow-none p-2 bg-green-300 text-white border-none rounded-full focus:outline-none sm:mr-2 sm:w-20 sm:text-sm">
+                            </span> --}}
+                        </td>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->type }}</td>
                         {{-- <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->description }}</td> --}}
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $leave->leave_type_name }}</td>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">
                             <div class="flex items-center justify-around h-full">
                                 @if ($leave->status == 'pending')
-                                    <button @click="$wire.call('updateLeave', leave, 'approved');" type="button" class="w-max inline-flex justify-center font-bold shadow-none p-2 bg-green-300 text-white border-none rounded-full focus:outline-none sm:mr-2 sm:w-48 sm:text-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-green-400 h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <button @click="$wire.call('updateLeave', leave, 'approved');" type="button" class="w-max inline-flex justify-center font-bold shadow-none p-2 bg-green-300 text-white border-none rounded-full focus:outline-none sm:mr-2 sm:w-20 sm:text-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-green-400 h-5 w-5 mr-4" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                         </svg>
                                         {{ __('Approved') }}
                                     </button>
-                                    <button @click="$wire.call('updateLeave', leave, 'refused');" type="button" class="w-max inline-flex justify-center font-bold shadow-none p-2 bg-red-300 text-white border-none rounded-full focus:outline-none sm:mr-2 sm:w-48 sm:text-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-red-400 h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <button @click="$wire.call('updateLeave', leave, 'refused');" type="button" class="w-max inline-flex justify-center font-bold shadow-none p-2 bg-red-300 text-white border-none rounded-full focus:outline-none sm:mr-2 sm:w-20 sm:text-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="fill-red-400 h-5 w-5 mr-4" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                                         </svg>
                                         {{ __('Refused') }}
