@@ -13,6 +13,8 @@
     "Lastname" : "Prénom",
     "Phone number" : "Téléphone",
     "Birth" : "Date de naissance",
+    "Approved": "Approuvé",
+    "Refused": "Refusé",
     "Gender" : "Sexe",
     "Personal informations" : "informations personnelles",
     "Modify personal information" : "Modifier les informations personnelles",

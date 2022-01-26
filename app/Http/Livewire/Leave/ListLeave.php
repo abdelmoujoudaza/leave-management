@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Excel;
 use App\Exports\LeavesExport;
 use Illuminate\Support\Facades\DB;
 
-class ListLeaves extends Component
+class ListLeave extends Component
 {
     use WithPagination;
 
@@ -21,12 +21,17 @@ class ListLeaves extends Component
     public $leaveTypes;
     public $demandTypes;
     public $user       = null;
+    public $leave      = null;
     public $leaveType  = null;
     public $demandType = null;
     public $period     = null;
     protected $perPage = 10;
     protected $model   = User::class;
     protected $query;
+    protected $rules = [
+        'leave'             => 'required|exists:leaves,id',
+        'leave.status'      => 'required|in:pending',
+    ];
 
     protected $headers = [
         'id'              => 'ID',
@@ -59,11 +64,11 @@ class ListLeaves extends Component
         $this->users       = User::all();
         $this->leaveTypes  = LeaveType::all();
         $this->demandTypes = [
-            (object) [
+            [
                 'id'   => 'leave',
                 'name' => 'leave'
             ],
-            (object) [
+            [
                 'id'   => 'allocation',
                 'name' => 'allocation'
             ]
@@ -72,7 +77,7 @@ class ListLeaves extends Component
 
     public function render()
     {
-        return view('livewire.leave.list-leaves');
+        return view('livewire.leave.list-leave');
     }
 
     public function export($type = 'xlsx')
@@ -154,6 +159,28 @@ class ListLeaves extends Component
     {
         $this->buildDatabaseQuery();
         return $this->query->toBase();
+    }
+
+    public function updateLeave($leave, $status)
+    {
+        $this->validate();
+
+        $this->leave = Leave::find($leave);
+
+        if ( ! is_null($this->leave)) {
+            // $this->dispatchBrowserEvent('leave-removed');
+            try {
+                DB::beginTransaction();
+                $this->status = $status;
+                $this->approvedBy()->associate(auth()->user());
+                // session()->flash("message", "Post successfully updated.");
+                DB::commit();
+            } catch (\Exception $exception) {
+                DB::rollback();
+            }
+        }
+
+        $this->leave = null;
     }
 
     public function sort($key = 'id', $direction = 'asc')

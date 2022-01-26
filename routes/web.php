@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\Leave\ListLeaves;
+use App\Http\Livewire\Leave\ListLeave;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +22,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::prefix('leave')->group(function () {
-        Route::get('/', ListLeaves::class)->name('leave.list');
+        Route::get('/', ListLeave::class)->name('leave.list');
+        // Route::get('/create', StoreLeave::class)->name('leave.create');
+        // Route::get('{leave}/edit', UpdateLeave::class)->name('leave.update');
     });
 });
