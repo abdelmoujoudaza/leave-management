@@ -18,6 +18,7 @@ class CreateLeaveTypesTable extends Migration
             $table->string('name');
             // $table->enum('unit', ['day', 'hour'])->default('day');
             $table->boolean('limited')->default(false);
+            $table->boolean('balanced')->default(true);
             $table->string('limit')->nullable();
             $table->timestamps();
         });

@@ -14,10 +14,11 @@ class LeaveTypeFactory extends Factory
     public function definition()
     {
         return [
-            'name'    => $this->faker->name(),
-            // 'unit'    => $this->faker->randomElement(['day', 'hour']),
-            'limited' => $this->faker->boolean(),
-            'limit'   => $this->faker->randomDigitNot(0),
+            'name'     => $this->faker->name(),
+            // 'unit'     => $this->faker->randomElement(['day', 'hour']),
+            'limited'  => $this->faker->boolean(),
+            'balanced' => $this->faker->boolean(),
+            'limit'    => $this->faker->randomDigitNot(0),
         ];
     }
 }

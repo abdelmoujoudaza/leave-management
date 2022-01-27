@@ -19,6 +19,7 @@ class LeaveType extends Model
         'name',
         // 'unit',
         'limited',
+        'balanced',
         'limit',
     ];
 

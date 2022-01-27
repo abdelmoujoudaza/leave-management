@@ -49,7 +49,7 @@
             <thead class="text-gray-300 bg-gray-800">
                 <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Employee') }}</th>
                 <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Number of days') }}</th>
-                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Start Date') }}</th>
+                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Start date') }}</th>
                 <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('End date') }}</th>
                 <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Status') }}</th>
                 <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Demand type') }}</th>
