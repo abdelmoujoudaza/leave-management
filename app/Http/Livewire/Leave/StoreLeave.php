@@ -6,9 +6,11 @@ use App\Models\Leave;
 use Livewire\Component;
 use App\Models\LeaveType;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\JoinClause;
 
 class StoreLeave extends Component
 {
+    public $user;
     public $leave;
     protected $query;
     protected $model = LeaveType::class;
@@ -30,8 +32,9 @@ class StoreLeave extends Component
 
     public function mount(Leave $leave)
     {
+        $this->user = auth()->user();
         $this->leave = $leave;
-        $this->leave->user()->associate(auth()->user());
+        $this->leave->user()->associate($this->user);
     }
 
     public function updated($property, $value)
@@ -49,9 +52,25 @@ class StoreLeave extends Component
         return $this->model::query()
                     ->select($this->getColumns())
                     ->addSelect($this->getRaws())
-                    ->join('leaves', 'leaves.user_id', 'users.id')
-                    ->join('leave_types', 'leaves.leave_type_id', 'leave_types.id');
-                    // ->leftJoin('users', 'leaves.approved_by', 'users.id');
+                    ->leftJoin('leaves', function (JoinClause $join) {
+                        $join->on('leaves.leave_type_id', 'leave_types.id')
+                            ->where('leaves.user_id', $this->user->id);
+                    })
+                    ->where(function ($query) {
+                        $query->whereNotNull('leaves.leave_type_id')
+                        ->where(function ($query) {
+                            $query->where(function ($query) {
+                                $query->where('leaves.type', 'leave')
+                                    ->whereIn('leaves.status', ['approved', 'pending']);
+                            })
+                            ->orWhere(function ($query) {
+                                $query->where('leaves.type', 'allocation')
+                                ->where('leaves.status', 'approved');
+                            });
+                        });
+                    })
+                    ->orWhereNull('leaves.leave_type_id')
+                    ->groupBy('leave_types.id');
     }
 
     public function buildDatabaseQuery()
@@ -62,21 +81,26 @@ class StoreLeave extends Component
     protected function getColumns()
     {
         return [
-            'leaves.id',
-            'leaves.number',
-            'leaves.description',
-            'leaves.start_date',
-            'leaves.end_date',
-            'leaves.status',
-            'leaves.type',
-            'leave_types.name as leave_type_name',
+            'leave_types.id',
+            'leave_types.name',
+            'leave_types.limited',
+            'leave_types.balanced',
+            'leave_types.limit',
         ];
     }
 
     public function getRaws()
     {
         return [
-            DB::raw('CONCAT(users.firstname, " ", users.lastname) AS fullname'),
+            DB::raw("
+                SUM(
+                    CASE
+                        WHEN leaves.leave_type_id IS NOT NULL AND leaves.type = 'leave' THEN (leaves.number * -1)
+                        WHEN leaves.leave_type_id IS NOT NULL AND leaves.type = 'allocation' THEN leaves.number
+                        ELSE 0
+                    END
+                ) AS number
+            "),
         ];
     }
 
