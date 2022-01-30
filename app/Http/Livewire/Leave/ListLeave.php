@@ -200,8 +200,8 @@ class ListLeave extends Component
     {
         $start = reset($this->period);
         $end   = end($this->period);
-        $this->query->whereDate('leaves.start_date', '<=', $start);
-        $this->query->whereDate('leaves.end_date', '>=', $end);
+        $this->query->whereDate('leaves.start_date', '>=', $start);
+        $this->query->whereDate('leaves.end_date', '<=', $end);
     }
 
     protected function filterByUser()

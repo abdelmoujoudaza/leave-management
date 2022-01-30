@@ -1,6 +1,6 @@
 <div class="text-left pl-20 py-6">
     <div class="font-semibold uppercase text-blue-dark mb-6">
-        {{ __('Request Leave') }}
+        {{ __('Request leave') }}
     </div>
     <form wire:submit.prevent="submit">
         <div class="mt-4 w-132">
@@ -35,7 +35,6 @@
             window.flatpickr.default('#period', {
                 mode: 'range',
                 minDate: 'today',
-                // maxDate: new Date().fp_incr(14),
                 dateFormat: 'Y-m-d',
                 locale: {
                     firstDayOfWeek: 1,

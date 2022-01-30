@@ -976,6 +976,10 @@ select {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+.-mx-3 {
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
 .ml-3 {
   margin-left: 0.75rem;
 }
@@ -1637,6 +1641,9 @@ select {
 }
 .pt-8 {
   padding-top: 2rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
 }
 .text-left {
   text-align: left;
@@ -2707,6 +2714,11 @@ span.flatpickr-day.selected {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
+.hover\:shadow-lg:hover {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
 .focus\:z-10:focus {
   z-index: 10;
 }
@@ -3158,6 +3170,17 @@ span.flatpickr-day.selected {
   .lg\:px-4 {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:w-1\/3 {
+    width: 33.333333%;
+  }
+
+  .xl\:px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }
 

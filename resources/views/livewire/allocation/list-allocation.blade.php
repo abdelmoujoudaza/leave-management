@@ -76,7 +76,7 @@
         window.addEventListener('livewire:load', function () {
             window.flatpickr.default('#period', {
                 mode: 'range',
-                minDate: '2021-01-01',
+                minDate: '2022-01-01',
                 maxDate: 'today',
                 dateFormat: 'Y-m-d',
                 locale: {

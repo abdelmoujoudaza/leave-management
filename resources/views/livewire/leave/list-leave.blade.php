@@ -27,13 +27,23 @@
             </div>
         </div>
     </div>
-    <div class="flex justify-start items-center mb-4" x-data @file-exported.window="$refs.xlsx.disabled = false; $refs.csv.disabled = false;">
-        <button type="button" x-ref="xlsx" @click="$refs.xlsx.disabled = true; $refs.csv.disabled = true;" wire:click="export('xlsx')" class="bg-gray-800 border-gray-800 outline-none text-gray-300 text-base py-3 px-5 mr-5 disabled:opacity-50">
-            {{ __('Excel export') }}
-        </button>
-        <button type="button" x-ref="csv" @click="$refs.xlsx.disabled = true; $refs.csv.disabled = true;" wire:click="export('csv')" class="bg-gray-800 border-gray-800 outline-none text-gray-300 text-base py-3 px-5 disabled:opacity-50">
-            {{ __('CSV export') }}
-        </button>
+    <div class="flex justify-between mb-4">
+        <div class="flex justify-start items-center" x-data @file-exported.window="$refs.xlsx.disabled = false; $refs.csv.disabled = false;">
+            <button type="button" x-ref="xlsx" @click="$refs.xlsx.disabled = true; $refs.csv.disabled = true;" wire:click="export('xlsx')" class="bg-gray-800 border-gray-800 outline-none text-gray-300 text-base py-3 px-5 mr-5 disabled:opacity-50">
+                {{ __('Excel export') }}
+            </button>
+            <button type="button" x-ref="csv" @click="$refs.xlsx.disabled = true; $refs.csv.disabled = true;" wire:click="export('csv')" class="bg-gray-800 border-gray-800 outline-none text-gray-300 text-base py-3 px-5 disabled:opacity-50">
+                {{ __('CSV export') }}
+            </button>
+        </div>
+        <a href="{{ route('leave.create') }}" class="flex flex-row items-center bg-gray-800 border-gray-800 outline-none text-gray-300 text-base py-3 px-5 disabled:opacity-50">
+            <span class="flex items-center justify-center text-lg text-green-400">
+                <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                    <path d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </span>
+            <span class="ml-3">{{ __('Request leave') }}</span>
+        </a>
     </div>
     <div class="w-full max-w-full relative overflow-x-scroll mb-4">
         <table class="w-full table-auto border-collapse text-sm text-left">
@@ -89,7 +99,7 @@
         window.addEventListener('livewire:load', function () {
             window.flatpickr.default('#period', {
                 mode: 'range',
-                minDate: '2021-01-01',
+                minDate: '2022-01-01',
                 maxDate: 'today',
                 dateFormat: 'Y-m-d',
                 locale: {

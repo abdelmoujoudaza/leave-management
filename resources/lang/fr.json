@@ -14,7 +14,7 @@
     "Phone number" : "Téléphone",
     "Birth" : "Date de naissance",
     "Log Out": "Se déconnecter",
-    "Request Leave": "Demander un congé",
+    "Request leave": "Demander un congé",
     "Days left": "Jours restant",
     "Max days": "Jours maximum",
     "Add a period with a set of days that you have in your balance": "Ajouter une période avec un ensemble de jours que vous avez dans votre solde",
@@ -58,7 +58,7 @@
     "Option" : "Option",
     "Add an option" : "Ajouter un option",
     "Allocated at": "Attribué à",
-    "Allocate a leave": "Allouer un congé",
+    "Allocate a leave": "Attribuer un congé",
     "Excel export": "exporter Excel",
     "CSV export": "exporter CSV",
     "Leaves management": "Gestion des congés",
@@ -66,5 +66,9 @@
     "All employees": "Tous les employés",
     "All types": "Tous les types",
     "Account": "Compte",
-    "The allocations": "Les attributions"
+    "The allocations": "Les attributions",
+    "This week": "Cette semaine",
+    "Next week": "Prochaine semaine",
+    "This month": "Ce mois",
+    "Add a number of days": "Ajouter un nombre de jours"
 }

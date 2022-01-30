@@ -1,6 +1,6 @@
 <div class="text-left pl-20 py-6">
     <div class="font-semibold uppercase text-blue-dark mb-6">
-        {{ __('Request Leave') }}
+        {{ __('Allocate a leave') }}
     </div>
     <form wire:submit.prevent="submit">
         <div class="mt-4 w-132">
@@ -20,9 +20,9 @@
             </select>
         </div>
         <div class="mt-4 w-132">
-            <x-jet-label for="period" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Period') }}</x-jet-label>
-            <x-jet-input id="period" wire:model="leave.number" class="form-input block shadow-none focus:shadow-none rounded-none placeholder-black text-sm w-full py-3 border-gray-600 {{ ($errors->has('leave.number')) ? 'border-red-400' : '' }}" type="number" step="0.5" name="period" placeholder="Période" />
-            @error('leave.number') <span class="error">{{ __('Add a valid period') }}</span> @enderror
+            <x-jet-label for="number" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Number of days') }}</x-jet-label>
+            <x-jet-input id="number" wire:model="leave.number" class="form-input block shadow-none focus:shadow-none rounded-none placeholder-black text-sm w-full py-3 border-gray-600 {{ ($errors->has('leave.number')) ? 'border-red-400' : '' }}" type="number" step="0.5" name="number" placeholder="Number of days" />
+            @error('leave.number') <span class="error">{{ __('Add a number of days') }}</span> @enderror
         </div>
         <div class="mt-4 w-132">
             <x-jet-label for="description" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Description') }}</x-jet-label>

@@ -10,7 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Excel;
-use App\Exports\LeavesExport;
+use App\Exports\AllocationsExport;
 use Illuminate\Support\Facades\DB;
 
 class ListAllocation extends Component
@@ -36,9 +36,7 @@ class ListAllocation extends Component
         'id'              => 'ID',
         'fullname'        => 'Employé',
         'number'          => 'Nombre de jours',
-        'start_date'      => 'Date de début',
-        'end_date'        => 'Date de fin',
-        'status'          => 'statut',
+        'created_at'      => 'Attribué à',
         'description'     => 'Description',
         'leave_type_name' => 'Type de congé',
     ];
@@ -69,7 +67,7 @@ class ListAllocation extends Component
             $export = $this->formattedMethodName('xlsx', 'exportAs');
         }
 
-        $file = $this->$export(new LeavesExport($this->getQuery(), $this->headers, $this->dates));
+        $file = $this->$export(new AllocationsExport($this->getQuery(), $this->headers, $this->dates));
         $this->dispatchBrowserEvent('file-exported');
         return $file;
     }

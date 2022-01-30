@@ -5,6 +5,7 @@ use App\Http\Livewire\Leave\ListLeave;
 use App\Http\Livewire\Leave\StoreLeave;
 use App\Http\Livewire\Allocation\ListAllocation;
 use App\Http\Livewire\Allocation\StoreAllocation;
+use App\Http\Livewire\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +21,7 @@ use App\Http\Livewire\Allocation\StoreAllocation;
 Route::redirect('/', 'dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
     Route::prefix('leave')->group(function () {
         Route::get('/', ListLeave::class)->name('leave.list');
