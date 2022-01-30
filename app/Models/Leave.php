@@ -54,7 +54,7 @@ class Leave extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function type(): BelongsTo
+    public function leaveType(): BelongsTo
     {
         return $this->belongsTo(LeaveType::class);
     }

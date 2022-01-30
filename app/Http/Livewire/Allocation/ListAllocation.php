@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Leave;
+namespace App\Http\Livewire\Allocation;
 
 use App\Models\User;
 use App\Models\Leave;
@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Excel;
 use App\Exports\LeavesExport;
 use Illuminate\Support\Facades\DB;
 
-class ListLeave extends Component
+class ListAllocation extends Component
 {
     use WithPagination;
 
@@ -22,6 +22,7 @@ class ListLeave extends Component
     public $user       = null;
     public $leave      = null;
     public $leaveType  = null;
+    public $demandType = null;
     public $period     = null;
     protected $perPage = 10;
     protected $model   = User::class;
@@ -38,14 +39,12 @@ class ListLeave extends Component
         'start_date'      => 'Date de début',
         'end_date'        => 'Date de fin',
         'status'          => 'statut',
-        'type'            => 'Type de demande',
         'description'     => 'Description',
         'leave_type_name' => 'Type de congé',
     ];
 
     protected $dates = [
-        'start_date',
-        'end_date',
+        'created_at',
     ];
 
     protected $sort = 'id';
@@ -54,12 +53,12 @@ class ListLeave extends Component
     public function mount()
     {
         $this->users      = User::all();
-        $this->leaveTypes = LeaveType::all();
+        $this->leaveTypes = LeaveType::whereBalanced(true)->get();
     }
 
     public function render()
     {
-        return view('livewire.leave.list-leave');
+        return view('livewire.allocation.list-allocation');
     }
 
     public function export($type = 'xlsx')
@@ -99,7 +98,7 @@ class ListLeave extends Component
                     ->addSelect($this->getRaws())
                     ->join('leaves', 'leaves.user_id', 'users.id')
                     ->join('leave_types', 'leaves.leave_type_id', 'leave_types.id')
-                    ->where('leaves.type', 'leave');
+                    ->where('leaves.type', 'allocation');
     }
 
     public function buildDatabaseQuery()
@@ -109,7 +108,6 @@ class ListLeave extends Component
         $this->filter('user')
             ->filter('period')
             ->filter('leaveType')
-            ->filter('demandType')
             ->sort();
     }
 
@@ -122,6 +120,7 @@ class ListLeave extends Component
             'leaves.start_date',
             'leaves.end_date',
             'leaves.status',
+            'leaves.created_at',
             'leave_types.name as leave_type_name',
         ];
     }
@@ -198,10 +197,7 @@ class ListLeave extends Component
 
     protected function filterByPeriod()
     {
-        $start = reset($this->period);
-        $end   = end($this->period);
-        $this->query->whereDate('leaves.start_date', '<=', $start);
-        $this->query->whereDate('leaves.end_date', '>=', $end);
+        $this->query->whereBetween('leaves.created_at', $this->period);
     }
 
     protected function filterByUser()

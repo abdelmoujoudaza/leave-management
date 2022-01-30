@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Leave;
 use App\Models\Leave;
 use Livewire\Component;
 use App\Models\LeaveType;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\JoinClause;
 
@@ -12,6 +13,7 @@ class StoreLeave extends Component
 {
     public $user;
     public $leave;
+    public $period   = null;
     protected $query;
     protected $model = LeaveType::class;
     protected $rules = [
@@ -19,8 +21,8 @@ class StoreLeave extends Component
         'leave.leave_type_id' => 'required|exists:leave_types,id',
         'leave.number'        => 'required|numeric|regex:/^\d+(\.5)?$/',
         'leave.description'   => 'nullable|string',
-        'leave.start_date'    => 'required|date|date_format:Y-m-d',
-        'leave.end_date'      => 'required|date|date_format:Y-m-d',
+        'leave.start_date'    => 'required|date',
+        'leave.end_date'      => 'required|date|after:start_date',
         'leave.status'        => 'nullable|string|in:pending',
         'leave.type'          => 'nullable|string|in:leave',
     ];
@@ -32,9 +34,12 @@ class StoreLeave extends Component
 
     public function mount(Leave $leave)
     {
-        $this->user = auth()->user();
+        $this->user  = auth()->user();
         $this->leave = $leave;
         $this->leave->user()->associate($this->user);
+        $this->leave->leaveType()->associate(LeaveType::first());
+        $this->leave->status = 'pending';
+        $this->leave->type   = 'leave';
     }
 
     public function updated($property, $value)
@@ -42,9 +47,30 @@ class StoreLeave extends Component
         $this->validateOnly($property);
     }
 
+    public function updatedPeriod($value)
+    {
+        if ( ! is_null($value) && ! empty($value)) {
+            $dates     = explode(',', $value);
+            $start     = Carbon::createFromFormat('Y-m-d', reset($dates))->startOfDay();
+            $end       = Carbon::createFromFormat('Y-m-d', end($dates))->endOfDay();;
+            $days      = $start->diffInWeekdays($end);
+            $leaveType = $this->leaveTypes->filter(function ($element) { return $element->id == $this->leave->leave_type_id; })->first();
+
+            if ($end->gt($start) && (($days <= $leaveType->number && $leaveType->balanced) || ($days <= $leaveType->limit))) {
+                $this->leave->start_date = $start;
+                $this->leave->end_date   = $end;
+                $this->leave->number     = $days;
+            } else {
+                $this->addError('leave.period', 'Add a period with a set of days that you have in your balance');
+            }
+        } else {
+            $this->addError('leave.period', 'Add a valid period');
+        }
+    }
+
     public function getLeaveTypesProperty()
     {
-        return $this->getQuery();
+        return $this->getQuery()->get();
     }
 
     public function builder()
@@ -112,21 +138,21 @@ class StoreLeave extends Component
 
     public function back()
     {
-        return redirect()->route("leave.list");
+        return redirect()->route('leave.list');
     }
 
     public function submit()
     {
         $this->validate();
+
         try {
             DB::beginTransaction();
             $this->leave->save();
-            // session()->flash("message", "Post successfully updated.");
+            session()->flash('message', 'Your demand has been submitted successfully');
             DB::commit();
             return $this->back();
         } catch (\Exception $exception) {
             DB::rollback();
         }
-
     }
 }

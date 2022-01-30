@@ -3,43 +3,99 @@
         {{ __('Request Leave') }}
     </div>
     <form wire:submit.prevent="submit">
-        <div class="font-semibold mb-6">
-            <span class="text-gray-500 text-sm mr-16">{{ __('Gender') }}</span>
-            <x-jet-input id="gender-homme" wire:model="advisor.gender" class="shadow-none form-radio form-tick h-5 w-5 mr-2" type="radio" name="gender" value="Homme" />
-            <x-jet-label for="gender-homme" class="font-semibold text-sm mr-4" value="Homme" />
-
-            <x-jet-input id="gender-femme" wire:model="advisor.gender" class="shadow-none form-radio form-tick h-5 w-5 mr-2" type="radio" name="gender" value="Femme" />
-            <x-jet-label for="gender-femme" class="font-semibold text-sm" value="Femme" />
-        </div>
         <div class="mt-4 w-132">
-            <x-jet-input id="firstname" wire:model="advisor.firstname" class="form-input block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 {{ $errors->has('advisor.firstname') ? 'border-red-400' : '' }} " type="text" name="firstname" placeholder="{{ __('Firstname') }}" required autofocus autocomplete="current-firstname" />
-        </div>
-        <div class="mt-4 w-132">
-            <x-jet-input id="lastname" wire:model="advisor.lastname" class="form-input block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 {{ $errors->has('advisor.lastname') ? 'border-red-400' : '' }} " type="text" name="lastname" placeholder="{{ __('Lastname') }}" required autocomplete="current-lastname" />
-        </div>
-        <div class="mt-4 w-132">
-            <x-jet-input id="phone-number" wire:model="advisor.phone_number" class="form-input block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 {{ $errors->has('advisor.phone_number') ? 'border-red-400' : '' }} " type="tele" name="phone_number" placeholder="{{ __('Phone number') }} ex:+212600000000" required autocomplete="current-phone_number" />
-            {{-- @error('advisor.phone_number') <span class="error">{{ $message }}</span> @enderror --}}
-        </div>
-        <div class="mt-4 w-132">
-            <x-jet-input id="email" wire:model="user.email" class="form-input block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 {{ $errors->has('user.email') ? 'border-red-400' : '' }} " type="email" name="email" :value="old('email')" placeholder="{{ __('E-mail') }}" required />
-            {{-- @error('user.email') <span class="error">{{ $message }}</span> @enderror --}}
-        </div>
-        <div class="mt-4 w-132">
-            <select id="sale-point" wire:model="advisor.sale_point_id" class="form-select shadow-none focus:shadow-none rounded-none text-sm w-full py-3 {{ $errors->has('advisor.sale_point_id') ? 'border-red-400' : '' }}" name="sale_point_id">
-                <option value="">{{ __('Sale point') }}</option>
-                @foreach ($salePoints as $salePoint)
-                    <option value="{{ $salePoint->id }}">{{ $salePoint->name }}</option>
+            <x-jet-label for="leave-type" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Leave type') }}</x-jet-label>
+            <select id="leave-type" wire:model="leave.leave_type_id" class="form-select shadow-none focus:shadow-none rounded-none text-sm w-full py-3 border-gray-600 {{ $errors->has('leave.leave_type_id') ? 'border-red-400' : '' }}" name="leave_type_id">
+                @foreach ($this->leaveTypes as $leaveType)
+                    <option value="{{ $leaveType->id }}">{{ $leaveType->name }} ({{ $leaveType->balanced ? $leaveType->number . ' ' . __('Days left') : $leaveType->limit . ' ' . __('Max days') }})</option>
                 @endforeach
             </select>
         </div>
+        <div class="mt-4 w-132" x-data>
+            <x-jet-label for="period" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Period') }}</x-jet-label>
+            <x-jet-input id="period" x-ref="date" class="form-input block shadow-none focus:shadow-none rounded-none placeholder-black text-sm w-full py-3 border-gray-600 {{ ($errors->has('leave.number')) ? 'border-red-400' : '' }}" type="text" name="period" placeholder="Période" />
+            @error('leave.number') <span class="error">{{ __('Add a valid period') }}</span> @enderror
+            @error('leave.period') <span class="error">{{ __($message) }}</span> @enderror
+        </div>
+        <div class="mt-4 w-132">
+            <x-jet-label for="description" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Description') }}</x-jet-label>
+            <textarea id="description" wire:model="leave.description" class="form-input block resize-none shadow-none focus:shadow-none rounded-none placeholder-black text-sm h-24 w-full py-3 border-gray-600 {{ $errors->has('leave.description') ? 'border-red-400' : '' }}" name="description" placeholder="Description"></textarea>
+        </div>
         <div class="flex items-center mt-10" x-data>
-            <x-jet-button type="submit" class="bg-blue-light outline-none capitalize text-white text-base rounded-none py-3 px-20 mr-2">
+            <x-jet-button type="submit" class="bg-gray-800 outline-none capitalize text-white text-base rounded-none py-3 px-20 mr-2">
                 {{ __('Validate') }}
             </x-jet-button>
-            <x-jet-button type="button" @click="$wire.back()" class="bg-gray-darkest outline-none capitalize text-white text-base rounded-none py-3 px-20 ml-2">
+            <x-jet-button type="button" @click="$wire.back()" class="bg-gray-400 focus:bg-gray-400 active:bg-gray-400 hover:bg-gray-400 outline-none border-none capitalize text-white text-base rounded-none py-3 px-20 ml-2">
                 {{ __('Cancel') }}
             </x-jet-button>
         </div>
     </form>
+    <script>
+        window.addEventListener('livewire:load', function () {
+            window.flatpickr.default('#period', {
+                mode: 'range',
+                minDate: 'today',
+                // maxDate: new Date().fp_incr(14),
+                dateFormat: 'Y-m-d',
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'],
+                        longhand: [
+                            'dimanche',
+                            'lundi',
+                            'mardi',
+                            'mercredi',
+                            'jeudi',
+                            'vendredi',
+                            'samedi',
+                        ],
+                    },
+                    months: {
+                        shorthand: [
+                            'janv',
+                            'févr',
+                            'mars',
+                            'avr',
+                            'mai',
+                            'juin',
+                            'juil',
+                            'août',
+                            'sept',
+                            'oct',
+                            'nov',
+                            'déc',
+                        ],
+                        longhand: [
+                            'janvier',
+                            'février',
+                            'mars',
+                            'avril',
+                            'mai',
+                            'juin',
+                            'juillet',
+                            'août',
+                            'septembre',
+                            'octobre',
+                            'novembre',
+                            'décembre',
+                        ],
+                    },
+                    ordinal: function (nth) {
+                        if (nth > 1)
+                            return '';
+                        return 'er';
+                    },
+                    rangeSeparator: ' au ',
+                    weekAbbreviation: 'Sem',
+                    scrollTitle: 'Défiler pour augmenter la valeur',
+                    toggleTitle: 'Cliquer pour basculer',
+                    time_24hr: true,
+                },
+                onChange: function(selectedDates, dateStr, instance) {
+                    @this.set('period', (selectedDates.length === 2) ? dateStr.replace(instance.l10n.rangeSeparator, ',') : '');
+                },
+            });
+        });
+    </script>
 </div>
