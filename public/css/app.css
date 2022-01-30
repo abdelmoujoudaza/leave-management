@@ -927,6 +927,17 @@ select {
 .prose > :where(:last-child):not(:where([class~="not-prose"] *)) {
   margin-bottom: 0;
 }
+.form-tick:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='blue' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='5'/%3e%3c/svg%3e");
+  background-color: #fff;
+  border-color: #d2d6dc;
+}
+.btn-edit {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='22.496' height='19.993' viewBox='0 0 22.496 19.993'%3e%3cpath id='Icon_awesome-edit' class='text-sm' data-name='Icon awesome-edit' d='M15.724,3.253l3.523,3.523a.382.382,0,0,1,0,.539l-8.53,8.53-3.624.4a.76.76,0,0,1-.84-.84l.4-3.624,8.53-8.53A.382.382,0,0,1,15.724,3.253Zm6.327-.894L20.145.452a1.528,1.528,0,0,0-2.156,0L16.607,1.835a.382.382,0,0,0,0,.539L20.13,5.9a.382.382,0,0,0,.539,0l1.383-1.383a1.528,1.528,0,0,0,0-2.156ZM15,13.524V17.5H2.5V5h8.975a.48.48,0,0,0,.332-.137L13.369,3.3a.469.469,0,0,0-.332-.8H1.875A1.875,1.875,0,0,0,0,4.377V18.125A1.875,1.875,0,0,0,1.875,20H15.623A1.875,1.875,0,0,0,17.5,18.125V11.962a.47.47,0,0,0-.8-.332l-1.562,1.562A.48.48,0,0,0,15,13.524Z' transform='translate(0 -0.007)' fill='gray'/%3e%3c/svg%3e");
+}
+.btn-remove {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='15.55' height='19.993' viewBox='0 0 15.55 19.993'%3e%3cpath id='Icon_material-delete' class='text-sm' data-name='Icon material-delete' d='M8.611,22.272a2.228,2.228,0,0,0,2.221,2.221h8.886a2.228,2.228,0,0,0,2.221-2.221V8.943H8.611ZM23.05,5.611H19.163L18.052,4.5H12.5L11.388,5.611H7.5V7.832H23.05Z' transform='translate(-7.5 -4.5)' fill='gray'/%3e%3c/svg%3e");
+}
 .fixed {
   position: fixed;
 }
@@ -951,11 +962,17 @@ select {
 .top-0 {
   top: 0px;
 }
+.bottom-0 {
+  bottom: 0px;
+}
 .z-0 {
   z-index: 0;
 }
 .z-50 {
   z-index: 50;
+}
+.z-40 {
+  z-index: 40;
 }
 .col-span-6 {
   grid-column: span 6 / span 6;
@@ -979,6 +996,10 @@ select {
 .-mx-3 {
   margin-left: -0.75rem;
   margin-right: -0.75rem;
+}
+.mx-px {
+  margin-left: 1px;
+  margin-right: 1px;
 }
 .ml-3 {
   margin-left: 0.75rem;
@@ -1052,17 +1073,23 @@ select {
 .mr-5 {
   margin-right: 1.25rem;
 }
-.mr-4 {
-  margin-right: 1rem;
-}
 .-mt-px {
   margin-top: -1px;
 }
 .-ml-2 {
   margin-left: -0.5rem;
 }
+.mr-16 {
+  margin-right: 4rem;
+}
+.mr-4 {
+  margin-right: 1rem;
+}
 .block {
   display: block;
+}
+.inline-block {
+  display: inline-block;
 }
 .flex {
   display: flex;
@@ -1182,6 +1209,12 @@ select {
 }
 .w-3\/5 {
   width: 60%;
+}
+.w-2\/4 {
+  width: 50%;
+}
+.w-28 {
+  width: 7rem;
 }
 .min-w-0 {
   min-width: 0px;
@@ -1331,6 +1364,9 @@ select {
 }
 .overflow-y-auto {
   overflow-y: auto;
+}
+.overflow-x-hidden {
+  overflow-x: hidden;
 }
 .overflow-y-hidden {
   overflow-y: hidden;
@@ -1505,11 +1541,26 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(156 163 175 / var(--tw-bg-opacity));
 }
+.bg-blue-light {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 97 166 / var(--tw-bg-opacity));
+}
+.bg-gray-darkest {
+  --tw-bg-opacity: 1;
+  background-color: rgb(182 182 182 / var(--tw-bg-opacity));
+}
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
 .bg-opacity-25 {
   --tw-bg-opacity: 0.25;
 }
 .bg-cover {
   background-size: cover;
+}
+.bg-contain {
+  background-size: contain;
 }
 .bg-center {
   background-position: center;
@@ -1523,8 +1574,8 @@ select {
 .fill-red-400 {
   fill: #f87171;
 }
-.fill-green-800 {
-  fill: #166534;
+.fill-gray-400 {
+  fill: #9ca3af;
 }
 .object-cover {
   -o-object-fit: cover;
@@ -1645,6 +1696,9 @@ select {
 .pb-6 {
   padding-bottom: 1.5rem;
 }
+.pr-32 {
+  padding-right: 8rem;
+}
 .text-left {
   text-align: left;
 }
@@ -1653,6 +1707,9 @@ select {
 }
 .text-right {
   text-align: right;
+}
+.align-bottom {
+  vertical-align: bottom;
 }
 .font-sans {
   font-family: Nunito, Montserrat, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -1808,6 +1865,10 @@ select {
   --tw-text-opacity: 1;
   color: rgb(229 231 235 / var(--tw-text-opacity));
 }
+.text-blue-light {
+  --tw-text-opacity: 1;
+  color: rgb(0 97 166 / var(--tw-text-opacity));
+}
 .underline {
   -webkit-text-decoration-line: underline;
           text-decoration-line: underline;
@@ -1839,6 +1900,9 @@ select {
 }
 .opacity-50 {
   opacity: 0.5;
+}
+.opacity-25 {
+  opacity: 0.25;
 }
 .shadow-sm {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -2714,11 +2778,6 @@ span.flatpickr-day.selected {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
-.hover\:shadow-lg:hover {
-  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
 .focus\:z-10:focus {
   z-index: 10;
 }
@@ -2910,6 +2969,11 @@ span.flatpickr-day.selected {
     margin-bottom: -1px;
   }
 
+  .sm\:my-8 {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
   .sm\:ml-3 {
     margin-left: 0.75rem;
   }
@@ -2942,6 +3006,10 @@ span.flatpickr-day.selected {
     margin-left: 0px;
   }
 
+  .sm\:ml-2 {
+    margin-left: 0.5rem;
+  }
+
   .sm\:block {
     display: block;
   }
@@ -2970,16 +3038,12 @@ span.flatpickr-day.selected {
     width: 100%;
   }
 
-  .sm\:w-20 {
-    width: 5rem;
-  }
-
-  .sm\:w-24 {
-    width: 6rem;
-  }
-
   .sm\:w-28 {
     width: 7rem;
+  }
+
+  .sm\:w-48 {
+    width: 12rem;
   }
 
   .sm\:max-w-md {
@@ -3021,6 +3085,10 @@ span.flatpickr-day.selected {
     --tw-scale-x: 1;
     --tw-scale-y: 1;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
   }
 
   .sm\:items-start {
@@ -3105,6 +3173,10 @@ span.flatpickr-day.selected {
 
   .sm\:text-right {
     text-align: right;
+  }
+
+  .sm\:align-middle {
+    vertical-align: middle;
   }
 
   .sm\:text-sm {

@@ -1,6 +1,7 @@
 {
     "Admin" : "Administrateur",
     "Employee": "Employé",
+    "Employees" : "Les employés",
     "Employees management" : "Gestion des employés",
     "Users List" : "Listes des employés",
     "E-mail" : "E-mail",
@@ -70,5 +71,14 @@
     "This week": "Cette semaine",
     "Next week": "Prochaine semaine",
     "This month": "Ce mois",
-    "Add a number of days": "Ajouter un nombre de jours"
+    "Add a number of days": "Ajouter un nombre de jours",
+    "National id": "Carte d'identité",
+    "Position": "Poste",
+    "Add an Employe": "Ajouter un employé",
+    "Address": "Adresse",
+    "Civil status": "État civil",
+    "Man": "Homme",
+    "Woman": "Femme",
+    "Single": "Célibataire",
+    "Married": "Marié(e)"
 }

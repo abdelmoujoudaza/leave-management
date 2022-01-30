@@ -45,10 +45,11 @@ class AllocationsExport implements FromQuery, WithColumnFormatting, ShouldAutoSi
     public function map($leave): array
     {
         return collect($this->headers)->keys()->map(function ($column, $index) use ($leave) {
-            if(in_array($column, $this->dates))
+            if (in_array($column, $this->dates)) {
                 return Date::stringToExcel($leave->$column);
-            else
+            } else {
                 return $leave->$column;
+            }
         })->toArray();
     }
 

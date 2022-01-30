@@ -156,10 +156,10 @@ class ListAllocation extends Component
         $this->leave = null;
     }
 
-    public function sort($key = 'id', $direction = 'asc')
+    public function sort($key = 'id', $direction = 'desc')
     {
         if (Arr::has($this->headers, $key)) {
-            $this->query->orderBy($key, in_array($direction, $this->directions) ? $direction : 'asc');
+            $this->query->orderBy($key, in_array($direction, $this->directions) ? $direction : 'desc');
         }
 
         return $this;

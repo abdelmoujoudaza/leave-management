@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Livewire\Dashboard;
+use App\Http\Livewire\User\ListUser;
+use App\Http\Livewire\User\StoreUser;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Leave\ListLeave;
+use App\Http\Livewire\User\UpdateUser;
 use App\Http\Livewire\Leave\StoreLeave;
 use App\Http\Livewire\Allocation\ListAllocation;
 use App\Http\Livewire\Allocation\StoreAllocation;
-use App\Http\Livewire\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +36,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/', ListAllocation::class)->name('allocation.list');
         Route::get('/create', StoreAllocation::class)->name('allocation.create');
         // Route::get('{allocation}/edit', UpdateAllocation::class)->name('allocation.update');
+    });
+
+    Route::prefix('user')->group(function () {
+        Route::get('/', ListUser::class)->name('user.list');
+        Route::get('/create', StoreUser::class)->name('user.create');
+        Route::get('{user}/edit', UpdateUser::class)->name('user.update');
     });
 });

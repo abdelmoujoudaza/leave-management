@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('national_id');
             $table->string('firstname');
             $table->string('lastname');
-            $table->enum('gender', ['male', 'female']);
+            $table->enum('gender', ['man', 'woman']);
             $table->date('birth');
             $table->enum('civil_status', ['single', 'married']);
             $table->string('address')->nullable();
