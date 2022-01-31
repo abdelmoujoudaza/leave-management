@@ -82,20 +82,6 @@ class StoreLeave extends Component
                         $join->on('leaves.leave_type_id', 'leave_types.id')
                             ->where('leaves.user_id', $this->user->id);
                     })
-                    ->where(function ($query) {
-                        $query->whereNotNull('leaves.leave_type_id')
-                        ->where(function ($query) {
-                            $query->where(function ($query) {
-                                $query->where('leaves.type', 'leave')
-                                    ->whereIn('leaves.status', ['approved', 'pending']);
-                            })
-                            ->orWhere(function ($query) {
-                                $query->where('leaves.type', 'allocation')
-                                ->where('leaves.status', 'approved');
-                            });
-                        });
-                    })
-                    ->orWhereNull('leaves.leave_type_id')
                     ->groupBy('leave_types.id');
     }
 
@@ -121,8 +107,8 @@ class StoreLeave extends Component
             DB::raw("
                 SUM(
                     CASE
-                        WHEN leaves.leave_type_id IS NOT NULL AND leaves.type = 'leave' THEN (leaves.number * -1)
-                        WHEN leaves.leave_type_id IS NOT NULL AND leaves.type = 'allocation' THEN leaves.number
+                        WHEN leaves.leave_type_id IS NOT NULL AND leaves.type = 'leave' AND leaves.status in ('approved', 'pending') THEN (leaves.number * -1)
+                        WHEN leaves.leave_type_id IS NOT NULL AND leaves.type = 'allocation' AND leaves.status ='approved' THEN leaves.number
                         ELSE 0
                     END
                 ) AS number

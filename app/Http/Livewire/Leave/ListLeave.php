@@ -38,7 +38,6 @@ class ListLeave extends Component
         'start_date'      => 'Date de début',
         'end_date'        => 'Date de fin',
         'status'          => 'statut',
-        'type'            => 'Type de demande',
         'description'     => 'Description',
         'leave_type_name' => 'Type de congé',
     ];
@@ -53,8 +52,12 @@ class ListLeave extends Component
 
     public function mount()
     {
-        $this->users      = User::all();
+        $this->users      = User::active()->get();
         $this->leaveTypes = LeaveType::all();
+
+        if (auth()->user()->hasRole('employee')) {
+            $this->user = auth()->user();
+        }
     }
 
     public function render()
@@ -70,7 +73,7 @@ class ListLeave extends Component
             $export = $this->formattedMethodName('xlsx', 'exportAs');
         }
 
-        $file = $this->$export(new LeavesExport($this->getQuery(), $this->headers, $this->dates));
+        $file = $this->$export(new LeavesExport($this->getQuery(), Arr::except($this->headers, auth()->user()->hasRole('employee') ? ['id', 'fullname'] : []), $this->dates));
         $this->dispatchBrowserEvent('file-exported');
         return $file;
     }

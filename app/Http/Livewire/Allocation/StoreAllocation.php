@@ -18,7 +18,7 @@ class StoreAllocation extends Component
     protected $rules = [
         'leave.user_id'       => 'required|exists:users,id',
         'leave.leave_type_id' => 'required|exists:leave_types,id',
-        'leave.number'        => 'required|numeric|regex:/^\d+(\.5)?$/',
+        'leave.number'        => 'required|numeric|min:0.5|regex:/^\d+(\.5)?$/',
         'leave.description'   => 'nullable|string',
         'leave.status'        => 'nullable|string|in:approved',
         'leave.type'          => 'nullable|string|in:allocation',
@@ -31,7 +31,7 @@ class StoreAllocation extends Component
 
     public function mount(Leave $leave)
     {
-        $this->users      = User::all();
+        $this->users      = User::active()->get();
         $this->leaveTypes = LeaveType::whereBalanced(true)->get();
         $this->leave      = $leave;
         $this->leave->user()->associate($this->users->first());

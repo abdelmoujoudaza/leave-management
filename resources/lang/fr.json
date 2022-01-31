@@ -80,5 +80,7 @@
     "Man": "Homme",
     "Woman": "Femme",
     "Single": "Célibataire",
-    "Married": "Marié(e)"
+    "Married": "Marié(e)",
+    "Manager": "Responsable",
+    "Role": "Rôle"
 }

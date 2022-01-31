@@ -44,18 +44,20 @@ class ListUser extends Component
         return view('livewire.user.list-user');
     }
 
-    public function removeUser()
+    public function archivedUser($id)
     {
-        $this->user = User::find($this->user);
+        $this->user = User::find($id);
 
         if ( ! is_null($this->user)) {
             try {
                 DB::beginTransaction();
-                $this->dispatchBrowserEvent('user-removed');
-                $this->user->delete();
-                session()->flash('message', 'The leave status was successfully change');
+                // $this->user->delete();
+                $this->user->update(['status' => 'archived']);
+                session()->flash('message', 'The user was successfully archived');
                 DB::commit();
+                $this->dispatchBrowserEvent('user-archived');
             } catch (\Exception $exception) {
+                dd($exception);
                 DB::rollback();
             }
         }
@@ -98,7 +100,11 @@ class ListUser extends Component
     {
         return $this->model::query()
                     ->select($this->getColumns())
-                    ->addSelect($this->getRaws());
+                    ->addSelect($this->getRaws())
+                    ->when(auth()->user()->hasRole('manager'), function ($query) {
+                        return $query->role(['employee', 'manager']);
+                    })
+                    ->active();
     }
 
     public function buildDatabaseQuery()

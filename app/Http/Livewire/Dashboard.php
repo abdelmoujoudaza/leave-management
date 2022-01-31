@@ -16,6 +16,7 @@ class Dashboard extends Component
             [
                 'title'  => __('This week'),
                 'leaves' => Leave::whereType('leave')
+                            ->notRefused()
                             ->whereDate('start_date', '>=', Carbon::now()->startOfWeek()->format('Y-m-d'))
                             ->whereDate('start_date', '<=', Carbon::now()->endOfWeek()->format('Y-m-d'))
                             ->with('user')
@@ -24,6 +25,7 @@ class Dashboard extends Component
             [
                 'title'  => __('Next week'),
                 'leaves' => Leave::whereType('leave')
+                            ->notRefused()
                             ->whereDate('start_date', '>=', Carbon::now()->nextWeekday()->startOfWeek()->format('Y-m-d'))
                             ->whereDate('start_date', '<=', Carbon::now()->nextWeekday()->endOfWeek()->format('Y-m-d'))
                             ->with('user')
@@ -32,6 +34,7 @@ class Dashboard extends Component
             [
                 'title'  => __('This month'),
                 'leaves' => Leave::whereType('leave')
+                            ->notRefused()
                             ->whereDate('start_date', '>=', Carbon::now()->startOfMonth()->format('Y-m-d'))
                             ->whereDate('start_date', '<=', Carbon::now()->endOfMonth()->format('Y-m-d'))
                             ->with('user')

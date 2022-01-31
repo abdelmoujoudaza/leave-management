@@ -5,7 +5,7 @@
     <form wire:submit.prevent="submit">
         <div class="mt-4 w-132">
             <x-jet-label for="leave-type" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Leave type') }}</x-jet-label>
-            <select id="leave-type" wire:model="leave.leave_type_id" class="form-select shadow-none focus:shadow-none rounded-none text-sm w-full py-3 border-gray-600 {{ $errors->has('leave.leave_type_id') ? 'border-red-400' : '' }}" name="leave_type_id">
+            <select id="leave-type" wire:model="leave.leave_type_id" class="form-select shadow-none focus:shadow-none rounded-none text-sm w-full py-3 border-gray-600 {{ $errors->has('leave.leave_type_id') ? 'text-red-400 placeholder:text-red-400 border-red-400' : '' }}" name="leave_type_id">
                 @foreach ($this->leaveTypes as $leaveType)
                     <option value="{{ $leaveType->id }}">{{ $leaveType->name }} ({{ $leaveType->balanced ? $leaveType->number . ' ' . __('Days left') : $leaveType->limit . ' ' . __('Max days') }})</option>
                 @endforeach
@@ -13,13 +13,13 @@
         </div>
         <div class="mt-4 w-132" x-data>
             <x-jet-label for="period" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Period') }}</x-jet-label>
-            <x-jet-input id="period" x-ref="date" class="form-input block shadow-none focus:shadow-none rounded-none placeholder-black text-sm w-full py-3 border-gray-600 {{ ($errors->has('leave.number')) ? 'border-red-400' : '' }}" type="text" name="period" placeholder="Période" />
-            @error('leave.number') <span class="error">{{ __('Add a valid period') }}</span> @enderror
-            @error('leave.period') <span class="error">{{ __($message) }}</span> @enderror
+            <x-jet-input id="period" x-ref="date" class="form-input block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 border-gray-600 {{ ($errors->has('leave.number') || $errors->has('leave.period')) ? 'text-red-400 placeholder:text-red-400 border-red-400' : 'placeholder:text-black' }}" type="text" name="period" placeholder="{{ __('Period') }}" />
+            @error('leave.number') <span class="text-red-400">{{ __('Add a valid period') }}</span> @enderror
+            @error('leave.period') <span class="text-red-400">{{ __($message) }}</span> @enderror
         </div>
         <div class="mt-4 w-132">
             <x-jet-label for="description" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Description') }}</x-jet-label>
-            <textarea id="description" wire:model="leave.description" class="form-input block resize-none shadow-none focus:shadow-none rounded-none placeholder-black text-sm h-24 w-full py-3 border-gray-600 {{ $errors->has('leave.description') ? 'border-red-400' : '' }}" name="description" placeholder="Description"></textarea>
+            <textarea id="description" wire:model="leave.description" class="form-input block resize-none shadow-none focus:shadow-none rounded-none text-sm h-24 w-full py-3 border-gray-600 {{ $errors->has('leave.description') ? 'text-red-400 placeholder:text-red-400 border-red-400' : 'placeholder:text-black' }}" name="description" placeholder="{{ __('Description') }}"></textarea>
         </div>
         <div class="flex items-center mt-10" x-data>
             <x-jet-button type="submit" class="bg-gray-800 outline-none capitalize text-white text-base rounded-none py-3 px-20 mr-2">

@@ -34,11 +34,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::prefix('allocation')->group(function () {
         Route::get('/', ListAllocation::class)->name('allocation.list');
-        Route::get('/create', StoreAllocation::class)->name('allocation.create');
+        Route::get('/create', StoreAllocation::class)->middleware(['role:manager|admin'])->name('allocation.create');
         // Route::get('{allocation}/edit', UpdateAllocation::class)->name('allocation.update');
     });
 
-    Route::prefix('user')->group(function () {
+    Route::group(['prefix' => 'user', 'middleware' => ['role:manager|admin']], function () {
         Route::get('/', ListUser::class)->name('user.list');
         Route::get('/create', StoreUser::class)->name('user.create');
         Route::get('{user}/edit', UpdateUser::class)->name('user.update');

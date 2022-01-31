@@ -50,8 +50,12 @@ class ListAllocation extends Component
 
     public function mount()
     {
-        $this->users      = User::all();
+        $this->users      = User::active()->get();
         $this->leaveTypes = LeaveType::whereBalanced(true)->get();
+
+        if (auth()->user()->hasRole('employee')) {
+            $this->user = auth()->user();
+        }
     }
 
     public function render()
@@ -67,7 +71,7 @@ class ListAllocation extends Component
             $export = $this->formattedMethodName('xlsx', 'exportAs');
         }
 
-        $file = $this->$export(new AllocationsExport($this->getQuery(), $this->headers, $this->dates));
+        $file = $this->$export(new AllocationsExport($this->getQuery(), Arr::except($this->headers, auth()->user()->hasRole('employee') ? ['id', 'fullname'] : []), $this->dates));
         $this->dispatchBrowserEvent('file-exported');
         return $file;
     }

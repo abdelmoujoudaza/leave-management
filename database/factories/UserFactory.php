@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'national_id'       => $this->faker->regexify('[A-Z]{2}[1-9]{5}'),
             'firstname'         => $this->faker->firstName(),
             'lastname'          => $this->faker->lastName(),
-            'gender'            => $this->faker->randomElement(['male', 'female']),
+            'gender'            => $this->faker->randomElement(['man', 'woman']),
             'birth'             => $this->faker->date(),
             'civil_status'      => $this->faker->randomElement(['single', 'married']),
             'address'           => $this->faker->address(),

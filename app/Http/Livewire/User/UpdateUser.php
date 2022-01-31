@@ -6,10 +6,13 @@ use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class UpdateUser extends Component
 {
     public $user;
+    public $role;
+    public $roles;
     public $password = '';
 
     protected $rules = [
@@ -23,11 +26,16 @@ class UpdateUser extends Component
         'user.civil_status' => 'required|string|in:single,married',
         'user.email'        => 'required|string|email|max:191|unique:users,email',
         'password'          => 'nullable|string|min:8|max:100',
+        'role'              => 'required|exists:roles,id',
     ];
 
     public function mount(User $user)
     {
-        $this->user = $user;
+        $this->user  = $user;
+        $this->roles = Role::when(auth()->user()->hasRole('manager'), function ($query) {
+            return $query->whereNotIn('name', ['admin']);
+        })->get();
+        $this->role  = $this->user->roles()->first()->id;
     }
 
     public function render()
@@ -63,9 +71,12 @@ class UpdateUser extends Component
 
         try {
             DB::beginTransaction();
+
             $this->user->fill([
                 'password' => empty($this->password) ? $this->user->password : bcrypt($this->password),
             ])->save();
+
+            $this->user->syncRoles($this->role);
 
             // session()->flash('message', 'Post successfully updated.');
             DB::commit();

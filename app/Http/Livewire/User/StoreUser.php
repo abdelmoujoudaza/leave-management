@@ -5,10 +5,13 @@ namespace App\Http\Livewire\User;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class StoreUser extends Component
 {
     public $user;
+    public $role;
+    public $roles;
     public $password = '';
 
     protected $rules = [
@@ -22,14 +25,19 @@ class StoreUser extends Component
         'user.civil_status' => 'required|string|in:single,married',
         'user.email'        => 'required|string|email|max:191|unique:users,email',
         'password'          => 'required|string|min:8|max:100',
+        'role'              => 'required|exists:roles,id',
     ];
 
     public function mount(User $user)
     {
-        $this->user = $user;
+        $this->user  = $user;
+        $this->roles = Role::when(auth()->user()->hasRole('manager'), function ($query) {
+            return $query->whereNotIn('name', ['admin']);
+        })->get();
+        $this->role  = $this->roles->first()->id;
         $this->user->gender = 'man';
         $this->user->status = 'active';
-        $this->user->civil_status = 'active';
+        $this->user->civil_status = 'single';
     }
 
     public function render()
@@ -53,14 +61,18 @@ class StoreUser extends Component
 
         try {
             DB::beginTransaction();
+
             $this->user->fill([
                 'password' => bcrypt($this->password),
             ])->save();
+
+            $this->user->assignRole($this->role);
 
             // session()->flash('message', 'Post successfully updated.');
             DB::commit();
             return $this->back();
         } catch (\Exception $exception) {
+            dd($exception);
             DB::rollback();
         }
     }

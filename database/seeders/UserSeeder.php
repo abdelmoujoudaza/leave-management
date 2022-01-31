@@ -18,11 +18,24 @@ class UserSeeder extends Seeder
         User::factory()
             ->count(1)
             ->state(['email' => 'admin@test.com'])
-            ->create();
+            ->create()
+            ->each(function ($user) {
+                $user->assignRole('admin');
+            });
 
+        User::factory()
+            ->count(1)
+            ->state(['email' => 'manager@test.com'])
+            ->create()
+            ->each(function ($user) {
+                $user->assignRole('manager');
+            });
         User::factory()
             ->count(10)
             ->hasLeaves(3)
-            ->create();
+            ->create()
+            ->each(function ($user) {
+                $user->assignRole('employee');
+            });
     }
 }
