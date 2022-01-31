@@ -20,10 +20,10 @@ class CreateUsersTable extends Migration
             $table->string('lastname');
             $table->enum('gender', ['man', 'woman']);
             $table->date('birth');
-            $table->enum('civil_status', ['single', 'married']);
+            $table->enum('civil_status', ['single', 'married'])->default('single');
             $table->string('address')->nullable();
             $table->string('position')->nullable();
-            $table->enum('status', ['active', 'archived']);
+            $table->enum('status', ['active', 'archived'])->default('active');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

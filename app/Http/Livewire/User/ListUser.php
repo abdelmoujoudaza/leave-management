@@ -133,7 +133,7 @@ class ListUser extends Component
     public function getRaws()
     {
         return [
-            DB::raw('CONCAT(users.firstname, " ", users.lastname) AS fullname'),
+            DB::raw("CONCAT(users.firstname, ' ', users.lastname) AS fullname"),
         ];
     }
 

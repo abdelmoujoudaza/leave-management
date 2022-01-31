@@ -56,7 +56,7 @@ class ListLeave extends Component
         $this->leaveTypes = LeaveType::all();
 
         if (auth()->user()->hasRole('employee')) {
-            $this->user = auth()->user();
+            $this->user = auth()->user()->id;
         }
     }
 
@@ -132,7 +132,7 @@ class ListLeave extends Component
     public function getRaws()
     {
         return [
-            DB::raw('CONCAT(users.firstname, " ", users.lastname) AS fullname'),
+            DB::raw("CONCAT(users.firstname, ' ', users.lastname) AS fullname"),
         ];
     }
 
@@ -201,10 +201,12 @@ class ListLeave extends Component
 
     protected function filterByPeriod()
     {
-        $start = reset($this->period);
-        $end   = end($this->period);
-        $this->query->whereDate('leaves.start_date', '>=', $start);
-        $this->query->whereDate('leaves.end_date', '<=', $end);
+        if ( ! is_null($this->period) && ! empty($this->period)) {
+            $start = reset($this->period);
+            $end   = end($this->period);
+            $this->query->whereDate('leaves.start_date', '>=', $start);
+            $this->query->whereDate('leaves.start_date', '<=', $end);
+        }
     }
 
     protected function filterByUser()

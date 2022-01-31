@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Allocation;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Leave;
 use Livewire\Component;
@@ -54,7 +55,7 @@ class ListAllocation extends Component
         $this->leaveTypes = LeaveType::whereBalanced(true)->get();
 
         if (auth()->user()->hasRole('employee')) {
-            $this->user = auth()->user();
+            $this->user = auth()->user()->id;
         }
     }
 
@@ -130,7 +131,7 @@ class ListAllocation extends Component
     public function getRaws()
     {
         return [
-            DB::raw('CONCAT(users.firstname, " ", users.lastname) AS fullname'),
+            DB::raw("CONCAT(users.firstname, ' ', users.lastname) AS fullname"),
         ];
     }
 
@@ -199,7 +200,9 @@ class ListAllocation extends Component
 
     protected function filterByPeriod()
     {
-        $this->query->whereBetween('leaves.created_at', $this->period);
+        $start = Carbon::createFromFormat('Y-m-d', reset($this->period))->startOfDay();
+        $end   = Carbon::createFromFormat('Y-m-d', end($this->period))->endOfDay();
+        $this->query->whereBetween('leaves.created_at', [$start->toDateTimeString(), $end->toDateTimeString()]);
     }
 
     protected function filterByUser()

@@ -72,7 +72,6 @@ class StoreUser extends Component
             DB::commit();
             return $this->back();
         } catch (\Exception $exception) {
-            dd($exception);
             DB::rollback();
         }
     }

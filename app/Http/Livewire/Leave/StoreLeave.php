@@ -64,7 +64,7 @@ class StoreLeave extends Component
                 $this->addError('leave.period', 'Add a period with a set of days that you have in your balance');
             }
         } else {
-            $this->addError('leave.period', 'Add a valid period');
+            // $this->addError('leave.period', 'Add a valid period');
         }
     }
 

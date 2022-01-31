@@ -30,6 +30,7 @@ class UserSeeder extends Seeder
             ->each(function ($user) {
                 $user->assignRole('manager');
             });
+
         User::factory()
             ->count(10)
             ->hasLeaves(3)

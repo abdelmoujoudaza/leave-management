@@ -13,7 +13,7 @@
         </div>
         <div class="mt-4 w-132" x-data>
             <x-jet-label for="period" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Period') }}</x-jet-label>
-            <x-jet-input id="period" x-ref="date" class="form-input block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 border-gray-600 {{ ($errors->has('leave.number') || $errors->has('leave.period')) ? 'text-red-400 placeholder:text-red-400 border-red-400' : 'placeholder:text-black' }}" type="text" name="period" placeholder="{{ __('Period') }}" />
+            <x-jet-input id="period" x-ref="date" x-on:load="$refs.date.value=''" class="form-input block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 border-gray-600 {{ ($errors->has('leave.number') || $errors->has('leave.period')) ? 'text-red-400 placeholder:text-red-400 border-red-400' : 'placeholder:text-black' }}" type="text" name="period" placeholder="{{ __('Period') }}" />
             @error('leave.number') <span class="text-red-400">{{ __('Add a valid period') }}</span> @enderror
             @error('leave.period') <span class="text-red-400">{{ __($message) }}</span> @enderror
         </div>
