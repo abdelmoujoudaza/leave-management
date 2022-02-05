@@ -82,5 +82,13 @@
     "Single": "Célibataire",
     "Married": "Marié(e)",
     "Manager": "Responsable",
-    "Role": "Rôle"
+    "Role": "Rôle",
+    "Refused title" : "Votre demande de congé a été refusée",
+    "Refused body" : "Votre demande de congé de :start à :end a été refusée par le responsable :manager",
+    "Approved title" : "Votre demande de congé a été approuvée",
+    "Approved body" : "Votre demande de congé de :start à :end a été approuvée par le responsable :manager",
+    "Demanded title" : "L'employé :employee a demandé un congé",
+    "Demanded body" : "L'employé :employee a demandé un congé, vous pouvez vérifier sa demande",
+    "Allocated title" : "Vous avez de nouvelles attributions",
+    "Allocated body" : "Le responsable :manager vous a alloué un solde de congés de type :type"
 }

@@ -56,6 +56,7 @@ class StoreAllocation extends Component
 
         try {
             DB::beginTransaction();
+            $this->leave->approvedBy()->associate(auth()->user());
             $this->leave->save();
             session()->flash('message', 'Your demand has been submitted successfully');
             DB::commit();

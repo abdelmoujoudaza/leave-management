@@ -5,7 +5,7 @@
     <form wire:submit.prevent="submit">
         <div class="mt-4 w-132">
             <x-jet-label for="leave-type" class="inline-flex items-center pl-2 py-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Leave type') }}</x-jet-label>
-            <select id="leave-type" wire:model="leave.leave_type_id" class="form-select shadow-none focus:shadow-none rounded-none text-sm w-full py-3 border-gray-600 {{ $errors->has('leave.leave_type_id') ? 'text-red-400 placeholder:text-red-400 border-red-400' : '' }}" name="leave_type_id">
+            <select id="leave-type" wire:model.defer="leave.leave_type_id" class="form-select shadow-none focus:shadow-none rounded-none text-sm w-full py-3 border-gray-600 {{ $errors->has('leave.leave_type_id') ? 'text-red-400 placeholder:text-red-400 border-red-400' : '' }}" name="leave_type_id">
                 @foreach ($this->leaveTypes as $leaveType)
                     <option value="{{ $leaveType->id }}">{{ $leaveType->name }} ({{ $leaveType->balanced ? $leaveType->number . ' ' . __('Days left') : $leaveType->limit . ' ' . __('Max days') }})</option>
                 @endforeach
