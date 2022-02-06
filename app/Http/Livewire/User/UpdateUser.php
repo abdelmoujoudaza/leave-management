@@ -78,7 +78,7 @@ class UpdateUser extends Component
 
             $this->user->syncRoles($this->role);
 
-            // session()->flash('message', 'Post successfully updated.');
+            session()->flash('message', __('The user was successfully updated'));
             DB::commit();
             return $this->back();
         } catch (\Exception $exception) {

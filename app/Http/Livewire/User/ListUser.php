@@ -53,7 +53,7 @@ class ListUser extends Component
                 DB::beginTransaction();
                 // $this->user->delete();
                 $this->user->update(['status' => 'archived']);
-                session()->flash('message', 'The user was successfully archived');
+                session()->flash('message', __('The user was successfully removed'));
                 DB::commit();
                 $this->dispatchBrowserEvent('user-archived');
             } catch (\Exception $exception) {

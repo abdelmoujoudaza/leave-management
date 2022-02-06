@@ -737,7 +737,7 @@
     "Add a period with a set of days that you have in your balance": "Ajouter une période avec un ensemble de jours que vous avez dans votre solde",
     "Add a valid period": "Ajouter une période valide",
     "Your demand has been submitted successfully": "Votre demande a été soumise avec succès",
-    "The leave status was successfully change": "le statut du congé a été modifié avec succès",
+    "The leave status was successfully change": "Le statut du congé a été modifié avec succès",
     "Approved": "Approuvé",
     "Pending": "En attente",
     "Refused": "Refusé",
@@ -798,5 +798,10 @@
     "Demanded title" : "L'employé :employee a demandé un congé",
     "Demanded body" : "L'employé :employee a demandé un congé, vous pouvez vérifier sa demande",
     "Allocated title" : "Vous avez de nouvelles attributions",
-    "Allocated body" : "Le responsable :manager vous a alloué un solde de congés de type :type"
+    "Allocated body" : "Le responsable :manager vous a alloué un solde de congés de type :type",
+    "The user was successfully archived": "L'utilisateur a été archivé avec succès",
+    "The user was successfully removed": "L'utilisateur a été supprimé avec succès",
+    "The user was successfully created": "L'utilisateur a été créé avec succès",
+    "The user was successfully updated": "L'utilisateur a été mis à jour avec succès",
+    "You allocated the leave balance successfully to the user": "Vous avez attribué le solde de congés à l'utilisateur avec succès"
 }

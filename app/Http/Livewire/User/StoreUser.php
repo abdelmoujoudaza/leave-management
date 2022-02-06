@@ -68,7 +68,7 @@ class StoreUser extends Component
 
             $this->user->assignRole($this->role);
 
-            // session()->flash('message', 'Post successfully updated.');
+            session()->flash('message', __('The user was successfully created'));
             DB::commit();
             return $this->back();
         } catch (\Exception $exception) {

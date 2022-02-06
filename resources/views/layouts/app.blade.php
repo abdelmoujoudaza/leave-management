@@ -25,11 +25,12 @@
                 @livewire('navigation-menu')
                 <div class="main-content flex flex-col flex-grow p-4">
                     <!-- Page Heading -->
-                    @if (isset($header))
+                    @isset ($header)
                         <header class="font-bold text-2xl text-gray-700">
                             {{ $header }}
                         </header>
-                    @endif
+                    @endisset
+
                     <div class="flex flex-col flex-grow bg-white mt-4">
                         <!-- Page Content -->
                         {{ $slot }}

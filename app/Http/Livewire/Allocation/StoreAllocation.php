@@ -58,7 +58,7 @@ class StoreAllocation extends Component
             DB::beginTransaction();
             $this->leave->approvedBy()->associate(auth()->user());
             $this->leave->save();
-            session()->flash('message', 'Your demand has been submitted successfully');
+            session()->flash('message', __('You allocated the leave balance successfully to the user'));
             DB::commit();
             return $this->back();
         } catch (\Exception $exception) {

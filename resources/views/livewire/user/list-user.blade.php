@@ -1,5 +1,12 @@
 <div class="w-full px-6 py-6 font-semibold">
-    <div x-data="{ open: false, user: null }" @toggle.window="open = !open; user = $event.detail;">
+    <div>
+        @if (session('message'))
+            <div class="mb-8 font-medium text-sm text-green-600">
+                {{ session('message') }}
+            </div>
+        @endif
+    </div>
+    <div x-data="{ open: false, user: null }" x-init="open = false; user = null; " @toggle.window="open = true; user = $event.detail;">
         <div :class="{ 'hidden': open === false, 'flex': open === true }" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center" id="modal-id">
             <template x-if="open">
                 <div
@@ -26,27 +33,15 @@
                         <button @click="$wire.call('archivedUser', user);" @user-archived.window="open = false;" type="button" class="w-full inline-flex justify-center font-bold shadow-sm px-4 py-2 bg-gray-800 text-gray-300 focus:outline-none sm:mr-2 sm:w-48 sm:text-sm">
                             {{ __('Remove') }}
                         </button>
-                        <button @click="open = false;" type="button" class="mt-3 w-full inline-flex justify-center font-bold shadow-sm px-4 py-2 bg-gray-400 text-white focus:outline-none sm:mt-0 sm:ml-2 sm:w-48 sm:text-sm">
+                        <button @click.stop="open = false;" type="button" class="mt-3 w-full inline-flex justify-center font-bold shadow-sm px-4 py-2 bg-gray-400 text-white focus:outline-none sm:mt-0 sm:ml-2 sm:w-48 sm:text-sm">
                             {{ __('Cancel') }}
                         </button>
                     </div>
                 </div>
             </template>
         </div>
-        <div :class="{ 'hidden': open === false, 'flex': open === true }" class="hidden opacity-25 fixed inset-0 z-40 bg-black hidden" id="modal-id-backdrop"></div>
+        <div :class="{ 'hidden': open === false, 'flex': open === true }" class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id-backdrop"></div>
     </div>
-
-    {{-- <div class="flex flex-col bg-gray-800 mb-4 py-2">
-        <div class="flex justify-center font-semibold text-gray-100">{{ __('Filter by') }}</div>
-        <hr class="h-px bg-gray-100 my-2" />
-        <div class="flex justify-around w-full items-center">
-            <div class="flex items-center relative w-64" x-data>
-                <x-jet-label for="user" class="inline-flex items-center bg-gray-100 w-3/6 p-2 border-none font-semibold text-gray-800 outline-none text-sm rounded-none h-full">{{ __('Name') }}</x-jet-label>
-                <x-jet-input id="user" x-ref="name" x-on:load="$refs.name.value=''" class="form-input block shadow-none w-3/6 focus:shadow-none rounded-none placeholder-black text-sm py-2" type="text" name="name" placeholder="{{ __('Name') }}" />
-            </div>
-        </div>
-    </div> --}}
-
     <div class="flex justify-between mb-4">
         <div class="flex justify-start items-center" x-data @file-exported.window="$refs.xlsx.disabled = false; $refs.csv.disabled = false;">
             <button type="button" x-ref="xlsx" @click="$refs.xlsx.disabled = true; $refs.csv.disabled = true;" wire:click="export('xlsx')" class="bg-gray-800 border-gray-800 outline-none text-gray-300 text-base py-3 px-5 mr-5 disabled:opacity-50">

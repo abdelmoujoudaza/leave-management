@@ -30,7 +30,7 @@
         </div>
         <div class="flex items-center mt-10" x-data>
             <x-jet-button type="submit" class="bg-gray-800 outline-none capitalize text-white text-base rounded-none py-3 px-20 mr-2">
-                {{ __('Validate') }}
+                {{ __('Save') }}
             </x-jet-button>
             <x-jet-button type="button" @click="$wire.back()" class="bg-gray-400 focus:bg-gray-400 active:bg-gray-400 hover:bg-gray-400 outline-none border-none capitalize text-white text-base rounded-none py-3 px-20 ml-2">
                 {{ __('Cancel') }}

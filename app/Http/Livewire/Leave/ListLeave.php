@@ -152,7 +152,7 @@ class ListLeave extends Component
                 $this->leave->status = $status;
                 $this->leave->approvedBy()->associate(auth()->user());
                 $this->leave->save();
-                session()->flash('message', 'The leave status was successfully change');
+                session()->flash('message', __('The leave status was successfully change'));
                 DB::commit();
             } catch (\Exception $exception) {
                 DB::rollback();

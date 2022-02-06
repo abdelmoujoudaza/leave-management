@@ -52,7 +52,7 @@ class StoreLeave extends Component
         if ( ! is_null($value) && ! empty($value)) {
             $dates     = explode(',', $value);
             $start     = Carbon::createFromFormat('Y-m-d', reset($dates))->startOfDay();
-            $end       = Carbon::createFromFormat('Y-m-d', end($dates))->endOfDay();;
+            $end       = Carbon::createFromFormat('Y-m-d', end($dates))->endOfDay();
             $days      = $start->diffInWeekdays($end);
             $leaveType = $this->leaveTypes->filter(function ($element) { return $element->id == $this->leave->leave_type_id; })->first();
 
@@ -134,7 +134,7 @@ class StoreLeave extends Component
         try {
             DB::beginTransaction();
             $this->leave->save();
-            session()->flash('message', 'Your demand has been submitted successfully');
+            session()->flash('message', __('Your demand has been submitted successfully'));
             DB::commit();
             return $this->back();
         } catch (\Exception $exception) {

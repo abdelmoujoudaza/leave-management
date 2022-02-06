@@ -141,26 +141,6 @@ class ListAllocation extends Component
         return $this->query->toBase();
     }
 
-    public function updateLeave($leave, $status)
-    {
-        $this->leave = Leave::find($leave);
-
-        if ( ! is_null($this->leave) && in_array($status, ['approved', 'refused'])) {
-            try {
-                DB::beginTransaction();
-                $this->leave->status = $status;
-                $this->leave->approvedBy()->associate(auth()->user());
-                $this->leave->save();
-                session()->flash('message', 'The leave status was successfully change');
-                DB::commit();
-            } catch (\Exception $exception) {
-                DB::rollback();
-            }
-        }
-
-        $this->leave = null;
-    }
-
     public function sort($key = 'id', $direction = 'desc')
     {
         if (Arr::has($this->headers, $key)) {
