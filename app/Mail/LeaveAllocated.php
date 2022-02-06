@@ -33,6 +33,6 @@ class LeaveAllocated extends Mailable
     {
         return $this->to($this->leave->user->email)
                 ->subject(__('Allocated title'))
-                ->view('emails.leaves.allocated', ['leave' => $this->leave]);
+                ->markdown('emails.leaves.allocated', ['leave' => $this->leave]);
     }
 }

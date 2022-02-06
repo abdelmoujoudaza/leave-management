@@ -37,6 +37,6 @@ class LeaveDemanded extends Mailable
 
         return $this->to($emails)
                 ->subject(__('Demanded title', ['employee' => $employee]))
-                ->view('emails.leaves.demanded', ['leave' => $this->leave]);
+                ->markdown('emails.leaves.demanded', ['leave' => $this->leave]);
     }
 }

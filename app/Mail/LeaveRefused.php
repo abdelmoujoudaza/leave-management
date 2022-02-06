@@ -33,6 +33,6 @@ class LeaveRefused extends Mailable
     {
         return $this->to($this->leave->user->email)
                 ->subject(__('Refused title'))
-                ->view('emails.leaves.refused', ['leave' => $this->leave]);
+                ->markdown('emails.leaves.refused', ['leave' => $this->leave]);
     }
 }

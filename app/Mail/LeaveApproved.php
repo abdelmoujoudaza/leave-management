@@ -33,6 +33,6 @@ class LeaveApproved extends Mailable
     {
         return $this->to($this->leave->user->email)
                 ->subject(__('Approved title'))
-                ->view('emails.leaves.approved', ['leave' => $this->leave]);
+                ->markdown('emails.leaves.approved', ['leave' => $this->leave]);
     }
 }
