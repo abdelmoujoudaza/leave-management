@@ -18,8 +18,8 @@ class RolesSeeder extends Seeder
         app(PermissionRegistrar::class)->forgetCachedPermissions();
 
         $roles = [
-            ['name' => 'employee'],
-            ['name' => 'manager'],
+            ['name' => 'student'],
+            ['name' => 'driver'],
             ['name' => 'admin']
         ];
 

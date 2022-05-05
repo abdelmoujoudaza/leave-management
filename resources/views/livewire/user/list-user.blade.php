@@ -51,22 +51,22 @@
                 {{ __('CSV export') }}
             </button>
         </div>
-        <a href="{{ route('user.create') }}" class="flex flex-row items-center bg-gray-800 border-gray-800 outline-none text-gray-300 text-base py-3 px-5 disabled:opacity-50">
+        <a href="{{ route(($currentRouteName == 'student.list') ? 'student.create' : 'driver.create') }}" class="flex flex-row items-center bg-gray-800 border-gray-800 outline-none text-gray-300 text-base py-3 px-5 disabled:opacity-50">
             <span class="flex items-center justify-center text-lg text-green-400">
                 <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                     <path d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </span>
-            <span class="ml-3">{{ __('Add an Employe') }}</span>
+            <span class="ml-3">{{ __(($currentRouteName == 'student.list') ? 'Add a Student' : 'Add a Driver') }}</span>
         </a>
     </div>
     <div class="w-full max-w-full relative overflow-x-scroll mb-4">
         <table class="w-full table-auto border-collapse text-sm text-left">
             <thead class="text-gray-300 bg-gray-800">
                 <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('National id') }}</th>
-                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Employee') }}</th>
+                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __(($currentRouteName == 'student.list') ? 'Student' : 'Driver') }}</th>
                 <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Gender') }}</th>
-                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('Position') }}</th>
+                <th class="border border-gray-800 border-r-white px-4 py-3">{{ __(($currentRouteName == 'student.list') ? 'Station' : 'Direction') }}</th>
                 <th class="border border-gray-800 border-r-white px-4 py-3">{{ __('E-mail') }}</th>
                 <th class="border border-gray-800 px-4 py-3">{{ __('Action') }}</th>
             </thead>
@@ -76,11 +76,11 @@
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $user->national_id }}</td>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $user->fullname }}</td>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ __(ucfirst($user->gender)) }}</td>
-                        <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $user->position }}</td>
+                        <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ ($currentRouteName == 'student.list') ? $user->station : $user->direction }}</td>
                         <td class="border border-gray-darkest px-4 py-3 whitespace-no-wrap">{{ $user->email }}</td>
                         <td class="border border-gray-darkest px-4 py-3">
                             <div class="flex items-center justify-around h-full">
-                                <a href="{{ route('user.update', ['user' => $user->id]) }}" class="cursor-pointer mx-px">
+                                <a href="{{ route(($currentRouteName == 'student.list') ? 'student.update' : 'driver.update', ['user' => $user->id]) }}" class="cursor-pointer mx-px">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-gray-400" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                         <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />

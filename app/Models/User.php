@@ -8,7 +8,9 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -27,14 +29,13 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
+        'station_id',
         'national_id',
         'firstname',
         'lastname',
         'gender',
         'birth',
-        'civil_status',
         'address',
-        'position',
         'status',
         'email',
         'password',
@@ -71,14 +72,25 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+
     /**
-     * Get all of the leaves for the User
+     * Get the station that user pelongs to it
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function leaves(): HasMany
+    public function station(): BelongsTo
     {
-        return $this->hasMany(Leave::class);
+        return $this->belongsTo(Station::class);
+    }
+
+    /**
+     * Get the direction that user will follow
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function direction(): HasOne
+    {
+        return $this->hasOne(Direction::class, 'driver_id');
     }
 
     /**
@@ -89,6 +101,6 @@ class User extends Authenticatable
      */
     public function scopeActive($query)
     {
-        return $query->whereStatus('active');
+        return $query->whereStatus(true);
     }
 }

@@ -47,7 +47,7 @@ class UsersExport implements FromQuery, WithColumnFormatting, ShouldAutoSize, Wi
         return collect($this->headers)->keys()->map(function ($column, $index) use ($leave) {
             if (in_array($column, $this->dates)) {
                 return Date::stringToExcel($leave->$column);
-            } else if (in_array($column, ['gender', 'civil_status'])) {
+            } elseif (in_array($column, ['gender'])) {
                 return __(ucfirst($leave->$column));
             } else {
                 return $leave->$column;

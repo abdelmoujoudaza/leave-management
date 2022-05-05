@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Station;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -18,25 +19,17 @@ class UserSeeder extends Seeder
         User::factory()
             ->count(1)
             ->state(['email' => 'admin@test.com'])
-            ->create()
+            ->createQuietly()
             ->each(function ($user) {
                 $user->assignRole('admin');
             });
 
         User::factory()
             ->count(1)
-            ->state(['email' => 'manager@test.com'])
-            ->create()
+            ->state(['email' => 'driver@test.com'])
+            ->createQuietly()
             ->each(function ($user) {
-                $user->assignRole('manager');
-            });
-
-        User::factory()
-            ->count(10)
-            ->hasLeaves(3)
-            ->create()
-            ->each(function ($user) {
-                $user->assignRole('employee');
+                $user->assignRole('driver');
             });
     }
 }

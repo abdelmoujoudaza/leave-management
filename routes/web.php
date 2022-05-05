@@ -29,18 +29,22 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::prefix('leave')->group(function () {
         Route::get('/', ListLeave::class)->name('leave.list');
         Route::get('/create', StoreLeave::class)->name('leave.create');
-        // Route::get('{leave}/edit', UpdateLeave::class)->name('leave.update');
     });
 
     Route::prefix('allocation')->group(function () {
         Route::get('/', ListAllocation::class)->name('allocation.list');
         Route::get('/create', StoreAllocation::class)->middleware(['role:manager|admin'])->name('allocation.create');
-        // Route::get('{allocation}/edit', UpdateAllocation::class)->name('allocation.update');
     });
 
-    Route::group(['prefix' => 'user', 'middleware' => ['role:manager|admin']], function () {
-        Route::get('/', ListUser::class)->name('user.list');
-        Route::get('/create', StoreUser::class)->name('user.create');
-        Route::get('{user}/edit', UpdateUser::class)->name('user.update');
+    Route::group(['prefix' => 'student', 'middleware' => ['role:admin']], function () {
+        Route::get('/', ListUser::class)->name('student.list');
+        Route::get('/create', StoreUser::class)->name('student.create');
+        Route::get('{user}/edit', UpdateUser::class)->name('student.update');
+    });
+
+    Route::group(['prefix' => 'driver', 'middleware' => ['role:admin']], function () {
+        Route::get('/', ListUser::class)->name('driver.list');
+        Route::get('/create', StoreUser::class)->name('driver.create');
+        Route::get('{user}/edit', UpdateUser::class)->name('driver.update');
     });
 });

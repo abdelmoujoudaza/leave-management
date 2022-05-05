@@ -10,27 +10,17 @@ use App\Exports\UsersExport;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 class ListUser extends Component
 {
     use WithPagination;
 
+    public $currentRouteName;
     public $user       = null;
     protected $perPage = 10;
     protected $model   = User::class;
     protected $query;
-    protected $headers = [
-        'id'          => 'ID',
-        'national_id' => "Carte d'identité",
-        'fullname'    => 'Employé',
-        'birth'       => 'Date de naissance',
-        'gender'      => 'Sexe',
-        'civil_status' => 'État civil',
-        'position'    => 'Poste',
-        // 'status'      => 'Statut',
-        'email'       => 'E-mail',
-        'address'     => 'Adresse',
-    ];
 
     protected $dates = [
         'birth',
@@ -38,6 +28,11 @@ class ListUser extends Component
 
     protected $sort = 'id';
     protected $directions = ['asc', 'desc'];
+
+    public function mount()
+    {
+        $this->currentRouteName = Route::currentRouteName();
+    }
 
     public function render()
     {
@@ -48,11 +43,10 @@ class ListUser extends Component
     {
         $this->user = User::find($id);
 
-        if ( ! is_null($this->user)) {
+        if (! is_null($this->user)) {
             try {
                 DB::beginTransaction();
-                // $this->user->delete();
-                $this->user->update(['status' => 'archived']);
+                $this->user->update(['status' => false]);
                 session()->flash('message', __('The user was successfully removed'));
                 DB::commit();
                 $this->dispatchBrowserEvent('user-archived');
@@ -70,11 +64,11 @@ class ListUser extends Component
     {
         $export = $this->formattedMethodName($type, 'exportAs');
 
-        if ( ! method_exists($this, $export)) {
+        if (! method_exists($this, $export)) {
             $export = $this->formattedMethodName('xlsx', 'exportAs');
         }
 
-        $file = $this->$export(new UsersExport($this->getQuery(), $this->headers, $this->dates));
+        $file = $this->$export(new UsersExport($this->getQuery(), $this->getHeaders(), $this->dates));
         $this->dispatchBrowserEvent('file-exported');
         return $file;
     }
@@ -101,10 +95,15 @@ class ListUser extends Component
         return $this->model::query()
                     ->select($this->getColumns())
                     ->addSelect($this->getRaws())
-                    ->when(auth()->user()->hasRole('manager'), function ($query) {
-                        return $query->role(['employee', 'manager']);
+                    ->leftJoin('stations', 'users.station_id', 'stations.id')
+                    ->leftJoin('directions', 'users.id', 'directions.driver_id')
+                    ->when(($this->currentRouteName == 'student.list'), function ($query) {
+                        $query->role('student');
                     })
-                    ->active();
+                    ->when(($this->currentRouteName == 'driver.list'), function ($query) {
+                        $query->role('driver');
+                    })
+                    ->where('users.status', true);
     }
 
     public function buildDatabaseQuery()
@@ -115,6 +114,20 @@ class ListUser extends Component
             ->sort();
     }
 
+    protected function getHeaders()
+    {
+        return [
+            'id'          => 'ID',
+            'national_id' => "Carte d'identité",
+            'fullname'    => ($this->currentRouteName == 'student.list') ? 'Étudiant' : 'Chauffeur',
+            'birth'       => 'Date de naissance',
+            'gender'      => 'Sexe',
+            'status'      => 'Statut',
+            'email'       => 'E-mail',
+            'address'     => 'Adresse',
+        ];
+    }
+
     protected function getColumns()
     {
         return [
@@ -122,9 +135,7 @@ class ListUser extends Component
             'users.national_id',
             'users.gender',
             'users.birth',
-            'users.civil_status',
             'users.address',
-            'users.position',
             'users.status',
             'users.email',
         ];
@@ -134,6 +145,8 @@ class ListUser extends Component
     {
         return [
             DB::raw("CONCAT(users.firstname, ' ', users.lastname) AS fullname"),
+            DB::raw("stations.name AS station"),
+            DB::raw("directions.name AS direction"),
         ];
     }
 
@@ -145,7 +158,7 @@ class ListUser extends Component
 
     public function sort($key = 'id', $direction = 'asc')
     {
-        if (Arr::has($this->headers, $key)) {
+        if (Arr::has($this->getHeaders(), $key)) {
             $this->query->orderBy($key, in_array($direction, $this->directions) ? $direction : 'asc');
         }
 

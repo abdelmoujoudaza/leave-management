@@ -2,9 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Leave;
-use App\Observers\LeaveObserver;
-use Illuminate\View\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,11 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('*', function(View $view) {
-            $pendingCount = Leave::Pending()->count();
-            $view->with('pendingCount', $pendingCount);
-        });
-
-        Leave::observe(LeaveObserver::class);
+        //
     }
 }
