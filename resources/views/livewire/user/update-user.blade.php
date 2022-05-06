@@ -18,25 +18,11 @@
             </div>
         </div>
 
-        <div class="font-semibold mb-6">
-            <span class="text-gray-500 text-sm mr-16">{{ __('Civil status') }}</span>
-            <div class="flex gap-4 mt-2">
-                <div class="flex">
-                    <x-jet-input id="civil-status-single" wire:model="user.civil_status" class="shadow-none form-radio form-tick h-5 w-5 mr-2" type="radio" name="civil_status" value="single" />
-                    <x-jet-label for="civil-status-single" class="font-semibold text-sm mr-4" value="{{ __('Single') }}" />
-                </div>
-                <div class="flex">
-                    <x-jet-input id="civil-status-married" wire:model="user.civil_status" class="shadow-none form-radio form-tick h-5 w-5 mr-2" type="radio" name="civil_status" value="married" />
-                    <x-jet-label for="civil-status-married" class="font-semibold text-sm" value="{{ __('Married') }}" />
-                </div>
-            </div>
-        </div>
-
         <div class="mt-4 w-132">
-            <x-jet-label for="role" class="text-gray-500 font-semibold text-sm mr-16">{{ __('Role') }}</x-jet-label>
-            <select id="role" wire:model.defer="role" class="form-select block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 mt-2 {{ $errors->has('role') ? 'text-red-400 placeholder:text-red-400 border-red-400' : '' }}" name="role">
-                @foreach ($roles as $role)
-                    <option value="{{ $role->id }}">{{ __(ucfirst($role->name)) }}</option>
+            <x-jet-label for="selected-item" class="text-gray-500 font-semibold text-sm mr-16">{{ __(($currentRouteName == 'student.create') ? 'Station' : 'Direction') }}</x-jet-label>
+            <select id="selected-item" wire:model="selectedItem" class="form-select block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 mt-2 {{ $errors->has('selectedItem') ? 'text-red-400 placeholder:text-red-400 border-red-400' : '' }}" name="selectedItem">
+                @foreach ($collection as $item)
+                    <option value="{{ $item->id }}">{{ __(ucfirst($item->name)) }}</option>
                 @endforeach
             </select>
         </div>
@@ -56,10 +42,6 @@
         <div class="mt-4 w-132 relative" x-data>
             <x-jet-input id="password" wire:model="password" class="form-input block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 pr-32 {{ $errors->has('password') ? 'text-red-400 placeholder:text-red-400 border-red-400' : '' }}" type="text" name="password" placeholder="{{ __('Password') }}" />
             <x-jet-button type="button" @click="$wire.password = generator.generate()" class="justify-center bg-gray-800 outline-none capitalize text-white text-base font-semibold rounded-none h-full w-28 absolute bottom-0 right-0">{{ __('Generate') }}</x-jet-button>
-        </div>
-
-        <div class="mt-4 w-132">
-            <x-jet-input id="position" wire:model="user.position" class="form-input block shadow-none focus:shadow-none rounded-none text-sm w-full py-3 {{ $errors->has('user.position') ? 'text-red-400 placeholder:text-red-400 border-red-400' : '' }}" type="text" name="position" placeholder="{{ __('Position') }}" required autocomplete="current-position" />
         </div>
 
         <div class="mt-4 w-132">

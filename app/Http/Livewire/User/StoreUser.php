@@ -47,6 +47,7 @@ class StoreUser extends Component
             'user.gender'      => 'required|string|in:man,woman',
             'user.email'       => 'required|string|email|max:191|unique:users,email',
             'password'         => 'required|string|min:8|max:100',
+            'role'             => 'required|exists:roles,id',
             'selectedItem'     => 'required|exists:' . (($this->currentRouteName == 'student.create') ? 'stations' : 'directions') . ',id',
         ];
     }
@@ -58,7 +59,7 @@ class StoreUser extends Component
 
     public function back()
     {
-        return redirect()->route('user.list');
+        return redirect()->route($this->currentRouteName == 'student.create' ? 'student.list' : 'driver.list');
     }
 
     public function submit()
@@ -72,14 +73,17 @@ class StoreUser extends Component
                 'password' => bcrypt($this->password),
             ])->save();
 
-            if (($this->currentRouteName == 'student.create')) {
-                $this->user->station()->associate(Station::find($this->selectedItem));
+            if ($this->currentRouteName == 'student.create') {
+                $station = Station::find($this->selectedItem);
+                $this->user->station()->associate($station);
+                $this->user->save();
             } else {
-                $direction = Station::find($this->selectedItem);
+                $direction = Direction::find($this->selectedItem);
                 $direction->driver()->associate($this->user);
+                $direction->save();
             }
 
-            // dd($this->user);
+            // dd($this->user, $direction);
 
             $this->user->assignRole($this->role);
 
