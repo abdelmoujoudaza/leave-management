@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Leave;
+use App\Models\Station;
 use Illuminate\Database\Query\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -10,17 +10,16 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class AllocationsExport implements FromQuery, WithColumnFormatting, ShouldAutoSize, WithMapping, WithHeadings
+class StationsExport implements FromQuery, WithColumnFormatting, ShouldAutoSize, WithMapping, WithHeadings
 {
     use Exportable;
 
     protected $query;
     protected $headers = [];
     protected $dates   = [];
-    protected $model   = Leave::class;
+    protected $model   = Station::class;
 
     public function __construct(Builder $query, $headers = [], $dates = [])
     {
@@ -42,21 +41,21 @@ class AllocationsExport implements FromQuery, WithColumnFormatting, ShouldAutoSi
         return collect($this->headers)->values()->toArray();
     }
 
-    public function map($leave): array
+    public function map($station): array
     {
-        return collect($this->headers)->keys()->map(function ($column, $index) use ($leave) {
+        return collect($this->headers)->keys()->map(function ($column, $index) use ($station) {
             if (in_array($column, $this->dates)) {
-                return Date::stringToExcel($leave->$column);
+                return Date::stringToExcel($station->$column);
+            } elseif ($column == 'status') {
+                return __($station->$column ? 'Enable' : 'Disable');
             } else {
-                return $leave->$column;
+                return $station->$column;
             }
         })->toArray();
     }
 
     public function columnFormats(): array
     {
-        return [
-            'D' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-        ];
+        return [];
     }
 }

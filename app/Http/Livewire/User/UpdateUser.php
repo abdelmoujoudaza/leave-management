@@ -24,8 +24,8 @@ class UpdateUser extends Component
     public function mount(User $user)
     {
         $this->currentRouteName = Route::currentRouteName();
-        $this->user  = $user;
-        $this->role  = $this->user->roles()->first()->id;
+        $this->user = $user;
+        $this->role = $this->user->roles()->first()->id;
         $this->collection   = ($this->currentRouteName == 'student.update') ? Station::all() : Direction::all();
         $this->selectedItem = ($this->currentRouteName == 'student.update')
             ? $this->user->station->id

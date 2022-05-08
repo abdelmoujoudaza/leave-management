@@ -19,8 +19,7 @@ class Direction extends Model
     protected $fillable = [
         'driver_id',
         'name',
-        'latitude',
-        'longitude',
+        'time',
         'status'
     ];
 

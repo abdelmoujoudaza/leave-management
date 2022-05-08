@@ -4,11 +4,11 @@ use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\User\ListUser;
 use App\Http\Livewire\User\StoreUser;
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\Leave\ListLeave;
+use App\Http\Livewire\Direction\ListDirection;
 use App\Http\Livewire\User\UpdateUser;
-use App\Http\Livewire\Leave\StoreLeave;
-use App\Http\Livewire\Allocation\ListAllocation;
-use App\Http\Livewire\Allocation\StoreAllocation;
+use App\Http\Livewire\Direction\StoreDirection;
+use App\Http\Livewire\Station\ListStation;
+use App\Http\Livewire\Station\StoreStation;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,14 +26,14 @@ Route::redirect('/', 'dashboard');
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
-    Route::prefix('leave')->group(function () {
-        Route::get('/', ListLeave::class)->name('leave.list');
-        Route::get('/create', StoreLeave::class)->name('leave.create');
+    Route::prefix('direction')->group(function () {
+        Route::get('/', ListDirection::class)->name('direction.list');
+        Route::get('/create', StoreDirection::class)->name('direction.create');
     });
 
-    Route::prefix('allocation')->group(function () {
-        Route::get('/', ListAllocation::class)->name('allocation.list');
-        Route::get('/create', StoreAllocation::class)->middleware(['role:manager|admin'])->name('allocation.create');
+    Route::group(['prefix' => 'station', 'middleware' => ['role:admin']], function () {
+        Route::get('/', ListStation::class)->name('station.list');
+        Route::get('/create', StoreStation::class)->name('station.create');
     });
 
     Route::group(['prefix' => 'student', 'middleware' => ['role:admin']], function () {

@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Leave;
+use App\Models\Direction;
 use Illuminate\Database\Query\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -13,14 +13,14 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class LeavesExport implements FromQuery, WithColumnFormatting, ShouldAutoSize, WithMapping, WithHeadings
+class DirectionsExport implements FromQuery, WithColumnFormatting, ShouldAutoSize, WithMapping, WithHeadings
 {
     use Exportable;
 
     protected $query;
     protected $headers = [];
     protected $dates   = [];
-    protected $model   = Leave::class;
+    protected $model   = Direction::class;
 
     public function __construct(Builder $query, $headers = [], $dates = [])
     {
@@ -42,24 +42,21 @@ class LeavesExport implements FromQuery, WithColumnFormatting, ShouldAutoSize, W
         return collect($this->headers)->values()->toArray();
     }
 
-    public function map($leave): array
+    public function map($direction): array
     {
-        return collect($this->headers)->keys()->map(function ($column, $index) use ($leave) {
+        return collect($this->headers)->keys()->map(function ($column, $index) use ($direction) {
             if (in_array($column, $this->dates)) {
-                return Date::stringToExcel($leave->$column);
-            } else if ($column == 'status') {
-                return __(ucfirst($leave->$column));
+                return Date::stringToExcel($direction->$column);
+            } elseif ($column == 'status') {
+                return __($direction->$column ? 'Enable' : 'Disable');
             } else {
-                return $leave->$column;
+                return $direction->$column;
             }
         })->toArray();
     }
 
     public function columnFormats(): array
     {
-        return [
-            'D' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-            'E' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-        ];
+        return [];
     }
 }

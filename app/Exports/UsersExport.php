@@ -42,15 +42,17 @@ class UsersExport implements FromQuery, WithColumnFormatting, ShouldAutoSize, Wi
         return collect($this->headers)->values()->toArray();
     }
 
-    public function map($leave): array
+    public function map($user): array
     {
-        return collect($this->headers)->keys()->map(function ($column, $index) use ($leave) {
+        return collect($this->headers)->keys()->map(function ($column, $index) use ($user) {
             if (in_array($column, $this->dates)) {
-                return Date::stringToExcel($leave->$column);
+                return Date::stringToExcel($user->$column);
+            } elseif ($column == 'status') {
+                return __($user->$column ? 'Enable' : 'Disable');
             } elseif (in_array($column, ['gender'])) {
-                return __(ucfirst($leave->$column));
+                return __(ucfirst($user->$column));
             } else {
-                return $leave->$column;
+                return $user->$column;
             }
         })->toArray();
     }
