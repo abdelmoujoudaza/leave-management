@@ -3,3 +3,7 @@
 @import 'tailwindcss/utilities';
 
 @import 'flatpickr/dist/themes/light';
+
+#map.leaflet-container {
+    height: 100%;
+}

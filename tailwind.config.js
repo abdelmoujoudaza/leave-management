@@ -16,6 +16,7 @@ module.exports = {
             },
             spacing: {
                 '132': '33rem',
+                '160': '40rem',
             },
             colors: {
                 'blue-light': '#0061A6',
@@ -72,6 +73,13 @@ module.exports = {
                     },
                     '&.week.selected': {
                         boxShadow: '-5px 0 0 ' + theme('colors.blue-light') + ', 5px 0 0 ' + theme('colors.blue-light') + '!important',
+                    }
+                },
+                '#map-wrapper': {
+                    '#map': {
+                        '&.leaflet-container': {
+                            height: theme('height.h-96')
+                        }
                     }
                 }
             }

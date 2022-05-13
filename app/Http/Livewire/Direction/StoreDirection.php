@@ -11,7 +11,6 @@ class StoreDirection extends Component
 {
     public $drivers;
     public $direction;
-    public $period   = null;
     protected $query;
     protected $model = Direction::class;
     protected $rules = [

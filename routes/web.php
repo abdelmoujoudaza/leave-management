@@ -4,11 +4,12 @@ use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\User\ListUser;
 use App\Http\Livewire\User\StoreUser;
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\Direction\ListDirection;
 use App\Http\Livewire\User\UpdateUser;
-use App\Http\Livewire\Direction\StoreDirection;
 use App\Http\Livewire\Station\ListStation;
 use App\Http\Livewire\Station\StoreStation;
+use App\Http\Livewire\Direction\ListDirection;
+use App\Http\Livewire\Direction\ShowDirection;
+use App\Http\Livewire\Direction\StoreDirection;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,11 +24,12 @@ use App\Http\Livewire\Station\StoreStation;
 
 Route::redirect('/', 'dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'redirect_base_on_role'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
     Route::prefix('direction')->group(function () {
         Route::get('/', ListDirection::class)->name('direction.list');
+        Route::get('{direction}/show', ShowDirection::class)->name('direction.show');
         Route::get('/create', StoreDirection::class)->name('direction.create');
     });
 
