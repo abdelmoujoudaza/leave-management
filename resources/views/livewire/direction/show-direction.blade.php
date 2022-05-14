@@ -80,9 +80,9 @@
                 let locations = direction.stations.map((station) => ({latLng: {lat: station.latitude, lng: station.longitude}}));
 
                 let map = L.mapquest.map('map', {
-                    center: [34.0209, -6.8000],
+                    center: [34.0209, -6.8100],
                     layers: L.mapquest.tileLayer('map'),
-                    zoom: 100
+                    zoom: 12
                 });
 
                 let directions = L.mapquest.directions();
